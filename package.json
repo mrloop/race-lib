@@ -1,0 +1,21 @@
+{
+  "name": "race-lib",
+  "version": "0.0.1",
+  "description": "retrieve event data from britishcycling.org",
+  "main": "index.js",
+  "repository": "https://gitlab.org/mrloop/race-lib",
+  "author": "mrloop <ewan@mrloop.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "ava"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "cheerio": "^1.0.0-rc.2",
+    "node-fetch": "^1.7.2",
+    "urijs": "^1.18.12"
+  },
+  "devDependencies": {
+    "ava": "^0.22.0"
+  }
+}

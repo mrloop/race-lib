@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<!--[if IE 7]><html class="lt-ie9 lt-ie8"><![endif]-->
+<!--[if IE 8]><html class="lt-ie9"><![endif]-->
+<!--[if gt IE 8]><!--><html lang="en"><!--<![endif]--><head>
+<meta charset="utf-8" /><script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(e,n,t){function r(t){if(!n[t]){var o=n[t]={exports:{}};e[t][0].call(o.exports,function(n){var o=e[t][1][n];return r(o||n)},o,o.exports)}return n[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<t.length;o++)r(t[o]);return r}({1:[function(e,n,t){function r(){}function o(e,n,t){return function(){return i(e,[c.now()].concat(u(arguments)),n?null:this,t),n?void 0:this}}var i=e("handle"),a=e(2),u=e(3),f=e("ee").get("tracer"),c=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],d="api-",l=d+"ixn-";a(p,function(e,n){s[n]=o(d+n,!0,"api")}),s.addPageAction=o(d+"addPageAction",!0),s.setCurrentRouteName=o(d+"routeName",!0),n.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,n){var t={},r=this,o="function"==typeof n;return i(l+"tracer",[c.now(),e,t],r),function(){if(f.emit((o?"":"no-")+"fn-start",[c.now(),r,o],t),o)try{return n.apply(this,arguments)}finally{f.emit("fn-end",[c.now()],t)}}}};a("setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,n){m[n]=o(l+n)}),newrelic.noticeError=function(e){"string"==typeof e&&(e=new Error(e)),i("err",[e,c.now()])}},{}],2:[function(e,n,t){function r(e,n){var t=[],r="",i=0;for(r in e)o.call(e,r)&&(t[i]=n(r,e[r]),i+=1);return t}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],3:[function(e,n,t){function r(e,n,t){n||(n=0),"undefined"==typeof t&&(t=e?e.length:0);for(var r=-1,o=t-n||0,i=Array(o<0?0:o);++r<o;)i[r]=e[n+r];return i}n.exports=r},{}],4:[function(e,n,t){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,n,t){function r(){}function o(e){function n(e){return e&&e instanceof r?e:e?f(e,u,i):i()}function t(t,r,o,i){if(!d.aborted||i){e&&e(t,r,o);for(var a=n(o),u=m(t),f=u.length,c=0;c<f;c++)u[c].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function l(e,n){v[e]=m(e).concat(n)}function m(e){return v[e]||[]}function w(e){return p[e]=p[e]||o(t)}function g(e,n){c(e,function(e,t){n=n||"feature",y[t]=n,n in s||(s[n]=[])})}var v={},y={},b={on:l,emit:t,get:w,listeners:m,context:n,buffer:g,abort:a,aborted:!1};return b}function i(){return new r}function a(){(s.api||s.feature)&&(d.aborted=!0,s=d.backlog={})}var u="nr@context",f=e("gos"),c=e(2),s={},p={},d=n.exports=o();d.backlog=s},{}],gos:[function(e,n,t){function r(e,n,t){if(o.call(e,n))return e[n];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,n,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return e[n]=r,r}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(e,n,t){function r(e,n,t,r){o.buffer([e],r),o.emit(e,n,t)}var o=e("ee").get("handle");n.exports=r,r.ee=o},{}],id:[function(e,n,t){function r(e){var n=typeof e;return!e||"object"!==n&&"function"!==n?-1:e===window?0:a(e,i,function(){return o++})}var o=1,i="nr@id",a=e("gos");n.exports=r},{}],loader:[function(e,n,t){function r(){if(!x++){var e=h.info=NREUM.info,n=d.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&n))return s.abort();c(y,function(n,t){e[n]||(e[n]=t)}),f("mark",["onload",a()+h.offset],null,"api");var t=d.createElement("script");t.src="https://"+e.agent,n.parentNode.insertBefore(t,n)}}function o(){"complete"===d.readyState&&i()}function i(){f("mark",["domContent",a()+h.offset],null,"api")}function a(){return E.exists&&performance.now?Math.round(performance.now()):(u=Math.max((new Date).getTime(),u))-h.offset}var u=(new Date).getTime(),f=e("handle"),c=e(2),s=e("ee"),p=window,d=p.document,l="addEventListener",m="attachEvent",w=p.XMLHttpRequest,g=w&&w.prototype;NREUM.o={ST:setTimeout,CT:clearTimeout,XHR:w,REQ:p.Request,EV:p.Event,PR:p.Promise,MO:p.MutationObserver};var v=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1026.min.js"},b=w&&g&&g[l]&&!/CriOS/.test(navigator.userAgent),h=n.exports={offset:u,now:a,origin:v,features:{},xhrWrappable:b};e(1),d[l]?(d[l]("DOMContentLoaded",i,!1),p[l]("load",r,!1)):(d[m]("onreadystatechange",o),p[m]("onload",r)),f("mark",["firstbyte",u],null,"api");var x=0,E=e(4)},{}]},{},["loader"]);</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="always">
+<meta name="description" content="British Cycling">
+<meta property="og:title" content="Events">
+<meta property="og:locale" content="en_GB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.britishcycling.org.uk/events_version_2/ajax_race_entrants_dialog?race_id=597786">
+<meta property="og:site_name" content="British Cycling">
+<meta name="format-detection" content="telephone=no">
+<meta name="twitter:widgets:csp" content="on">
+<meta property="og:image" content="https://www.britishcycling.org.uk/1200//zuvvi/media/branding/bc_logo.png">
+<meta property="fb:app_id" content="321309654558138" />
+<link rel="apple-touch-icon" sizes="57x57" href="/zuvvi/media/favicons/apple-touch-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/zuvvi/media/favicons/apple-touch-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/zuvvi/media/favicons/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/zuvvi/media/favicons/apple-touch-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/zuvvi/media/favicons/apple-touch-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/zuvvi/media/favicons/apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/zuvvi/media/favicons/apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/zuvvi/media/favicons/apple-touch-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/zuvvi/media/favicons/apple-touch-icon-180x180.png">
+<meta name="apple-mobile-web-app-title" content="British Cycling">
+<link rel="shortcut icon" href="/zuvvi/media/favicons/favicon.ico">
+<link rel="icon" type="image/png" href="/zuvvi/media/favicons/favicon-192x192.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/zuvvi/media/favicons/favicon-160x160.png" sizes="160x160">
+<link rel="icon" type="image/png" href="/zuvvi/media/favicons/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="/zuvvi/media/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/zuvvi/media/favicons/favicon-32x32.png" sizes="32x32">
+<meta name="msapplication-TileColor" content="#2d89ef">
+<meta name="msapplication-TileImage" content="/zuvvi/media/favicons/mstile-144x144.png">
+<meta name="msapplication-config" content="/zuvvi/media/favicons/browserconfig.xml">
+<meta name="application-name" content="British Cycling">
+<title>Events - British Cycling</title><link href="/zuvvi/ext/template/bc/tpl_global_page/design/assets/css/theme-bc.1485774358.css" media="all" rel="stylesheet" type="text/css" ><!--[if lt IE 9]> <script type="text/javascript" src="/zuvvi/ext/template/bc/tpl_global_page/design/assets/js/ie/html5shiv-printshiv.min.1407829655.js"></script><![endif]-->
+<!--[if lt IE 9]> <script type="text/javascript" src="/zuvvi/ext/template/bc/tpl_global_page/design/assets/js/ie/respond.min.1407829655.js"></script><![endif]-->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?&amp;sensor=false"></script>
+<script>document.createElement( "picture" );</script>
+<script src="/zuvvi/ext/template/bc/tpl_global_page/template/../js_cache/picturefill.min.1434356033.js" async></script>
+<link rel='canonical' href='https://www.britishcycling.org.uk/events_version_2/ajax_race_entrants_dialog?race_id=597786'>
+
+</head>
+<body class="no-js "><div class="page"><script type="text/javascript">function defer(method) {
+	if (window.$){ 
+		method(); 
+	} else {
+		setTimeout(function() { 
+			defer(method); 
+		}, 50);
+	}
+}
+defer(function(){
+
+var state = $('.details_page').data('state');
+
+if (state == 'preview') {
+    $('body').prepend('<div style="text-align:center;"><h2>This is a preview of your event</h2><p>Close preview to proceed to the next step.</p><p><a class="button button-medium" href="javascript:window.close();">Close</a></p></div>');
+}
+
+});</script><noscript><iframe
+src="//www.googletagmanager.com/ns.html?id=GTM-5T3TCK"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5T3TCK');</script> 			
+																									<header class="page__header">
+	<div class="layout">
+		<div class="logo">
+			<a href="/">
+				<picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/205/97/zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png, /410/194/zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png 2x" media="(min-width: 1226px)">
+<source
+srcset="/175/83/zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png, /350/166/zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png 2x" media="(min-width: 641px)">
+<source
+srcset="/195/92/zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png, /390/184/zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png 2x" media="(min-width: 0px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/195/92/zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png"
+srcset ="/195/92/zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png, /390/184/zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png 2x" alt ="British Cycling">
+</picture>
+			</a>
+		</div>
+		<div class="page__header__nav">
+			<nav class="nav nav--primary">
+				<ul class="nav__list nav__list--main">
+											<li class="nav__item ">
+							<span class="nav__label nav__toggle">Road</span>
+							<ul class="nav__list nav__list--sub">								<li class="nav__item"><a href="/road" class="nav__label" alt="Road racing">Road racing</a></li>								<li class="nav__item"><a href="/sportives" class="nav__label" alt="Sportives">Sportives</a></li>								<li class="nav__item"><a href="/commuting" class="nav__label" alt="Commuting">Commuting</a></li>							</ul>
+						</li>
+											<li class="nav__item ">
+							<span class="nav__label nav__toggle">Dirt</span>
+							<ul class="nav__list nav__list--sub">								<li class="nav__item"><a href="/bmx" class="nav__label" alt="BMX">BMX</a></li>								<li class="nav__item"><a href="/cyclocross" class="nav__label" alt="Cyclo-cross">Cyclo-cross</a></li>								<li class="nav__item"><a href="/mtb" class="nav__label" alt="Mountain bike">Mountain bike</a></li>							</ul>
+						</li>
+											<li class="nav__item ">
+							<span class="nav__label nav__toggle">Track</span>
+							<ul class="nav__list nav__list--sub">								<li class="nav__item"><a href="/track" class="nav__label" alt="Track cycling">Track cycling</a></li>								<li class="nav__item"><a href="/cyclespeedway" class="nav__label" alt="Cycle speedway">Cycle speedway</a></li>							</ul>
+						</li>
+											<li class="nav__item ">
+							<span class="nav__label nav__toggle">Let&#039;s Ride</span>
+							<ul class="nav__list nav__list--sub">								<li class="nav__item"><a href="https://www.letsride.co.uk/city-ride" class="nav__label" alt="HSBC UK City Ride">HSBC UK City Ride</a></li>								<li class="nav__item"><a href="https://www.letsride.co.uk/breeze" class="nav__label" alt="HSBC UK Breeze">HSBC UK Breeze</a></li>								<li class="nav__item"><a href="https://www.letsride.co.uk/guided-rides" class="nav__label" alt="HSBC UK Guided Rides">HSBC UK Guided Rides</a></li>								<li class="nav__item"><a href="https://www.letsride.co.uk/social" class="nav__label" alt="HSBC UK Ride Social">HSBC UK Ride Social</a></li>								<li class="nav__item"><a href="https://www.letsride.co.uk/routes" class="nav__label" alt="Cycling routes">Cycling routes</a></li>							</ul>
+						</li>
+											<li class="nav__item ">
+							<span class="nav__label nav__toggle">Get Involved</span>
+							<ul class="nav__list nav__list--sub">								<li class="nav__item"><a href="/membership" class="nav__label" alt="Join British Cycling">Join British Cycling</a></li>								<li class="nav__item"><a href="/getinvolved" class="nav__label" alt="Get into cycling">Get into cycling</a></li>								<li class="nav__item"><a href="/workforce" class="nav__label" alt="Officials &amp; Volunteers">Officials &amp; Volunteers</a></li>								<li class="nav__item"><a href="/clubs" class="nav__label" alt="Club cycling">Club cycling</a></li>								<li class="nav__item"><a href="/go-ride" class="nav__label" alt="Children &amp; HSBC UK Go-Ride">Children &amp; HSBC UK Go-Ride</a></li>								<li class="nav__item"><a href="/disability/article/parast_About-Disability-Cycling" class="nav__label" alt="Disability &amp; Para-cycling">Disability &amp; Para-cycling</a></li>								<li class="nav__item"><a href="/women/article/20141029-recreation-Womens-cycling-0" class="nav__label" alt="Women&#039;s cycling">Women&#039;s cycling</a></li>								<li class="nav__item"><a href="/bcregions" class="nav__label" alt="Regions &amp; Nations">Regions &amp; Nations</a></li>							</ul>
+						</li>
+																<li class="nav__item nav__item--gbteam">
+							<a href="/gbcyclingteam" class="nav__label">GB Cycling Team</a>
+						</li>
+																<li class="nav__item nav__item--top first">
+							<a href="/news" class="nav__label" alt="News">News</a>
+						</li>
+											<li class="nav__item nav__item--top">
+							<a href="/events" class="nav__label" alt="Events">Events</a>
+						</li>
+											<li class="nav__item nav__item--top">
+							<a href="/campaigning" class="nav__label" alt="Campaigning">Campaigning</a>
+						</li>
+											<li class="nav__item nav__item--top">
+							<a href="/education" class="nav__label" alt="Education &amp; Coaching">Education &amp; Coaching</a>
+						</li>
+											<li class="nav__item nav__item--top">
+							<a href="/knowledge" class="nav__label" alt="Insight Zone">Insight Zone</a>
+						</li>
+											<li class="nav__item nav__item--top last">
+							<a href="/membership" class="nav__label" alt="Membership">Membership</a>
+						</li>
+									</ul>
+				<ul class="nav__social">
+					
+																																		<li class="nav__social__item">
+								<a href="https://www.flickr.com/photos/britishcycling/" target="_blank">
+									<picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/30//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/flickr.1407829654.png, /60//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/flickr.1407829654.png 2x" media="(min-width: 641px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/30//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/flickr.1407829654.png"
+srcset ="/30//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/flickr.1407829654.png, /60//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/flickr.1407829654.png 2x" alt ="Flickr">
+</picture>
+								</a>
+							</li>
+																								<li class="nav__social__item">
+								<a href="https://www.youtube.com/britishcycling" target="_blank">
+									<picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/30//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/youtube.1407829655.png, /60//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/youtube.1407829655.png 2x" media="(min-width: 641px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/30//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/youtube.1407829655.png"
+srcset ="/30//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/youtube.1407829655.png, /60//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/youtube.1407829655.png 2x" alt ="Youtube">
+</picture>
+								</a>
+							</li>
+																								<li class="nav__social__item">
+								<a href="https://twitter.com/britishcycling" target="_blank">
+									<picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/30//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/twitter.1407829655.png, /60//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/twitter.1407829655.png 2x" media="(min-width: 641px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/30//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/twitter.1407829655.png"
+srcset ="/30//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/twitter.1407829655.png, /60//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/twitter.1407829655.png 2x" alt ="Twitter">
+</picture>
+								</a>
+							</li>
+																								<li class="nav__social__item">
+								<a href="https://www.facebook.com/britishcycling" target="_blank">
+									<picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/30//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/facebook.1407829654.png, /60//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/facebook.1407829654.png 2x" media="(min-width: 641px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/30//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/facebook.1407829654.png"
+srcset ="/30//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/facebook.1407829654.png, /60//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/facebook.1407829654.png 2x" alt ="Facebook">
+</picture>
+								</a>
+							</li>
+															</ul>
+				<div class="nav__login">
+											<a href="/uac/connect" class="button button--medium">Login</a>
+						<a href="/uac/register" class="button button--register">Register for tips & videos</a>
+									</div>
+			</nav>
+							<div class="search search--header">
+					<div class="search__form">
+						<form class="form" action="/search" method="get">
+							<div class="form__item form__item--string">
+								<label class="form__label" for="globalsearch"></label>
+								<input class="form__field form__field--medium form__field--string" type="text" placeholder="Search..." id="globalsearch" name="s" />
+							</div>
+							<div class="form__actions">
+								<button class="button button--tertiary" type="submit">Search</button>
+							</div>
+						</form>
+					</div>
+				</div>
+					</div>
+	</div>
+</header>
+
+																																																																																		<main class="page__content">
+	<div class="layout">
+		<div class="grid-desktop-wrap grid-tablet-wrap">
+			<div class="grid-desktop-col-1-6 grid-tablet-col-1-4 bleed-tablet-left bleed-tablet-wide-left bleed-desktop-left">
+				<nav
+id="event__menu" class="subnav collapsible"><h2 class="subnav__title collapsible__toggle"><a
+class="subnav__label--top" href="/events">Events</a></h2><ul
+class="subnav__list collapsible__content subnav__list--current"><li
+class="subnav__item">
+<a
+href="/events/my_events" class="subnav__label">My Events</a></li>
+<li
+class="subnav__item">
+<a
+href="#" class="subnav__label">Saved Filters</a><ul
+class="subnav__list subnav__list--faceted js-safe-hide" style="margin-bottom:1rem;"><li
+class="subnav__item"><div
+class="grid-desktop-wrap grid-tablet-wrap grid-tablet-wide-wrap"><div
+class="grid-desktop-col-full grid-tablet-wide-col-full grid-tablet-col-full grid-mobile-col-full">
+<span
+class="subnav__label">No saved filters</span></div></div></li></ul></li><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents" class="subnav__label" id="event-finder-list" data-autoexpand_requires="form[action=&quot;/events&quot;], #event_details_body:not(:has(#results))" >Events Finder</a><ul
+class="subnav__list subnav__list--faceted js-safe-hide"><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=2" class="subnav__label load_event_filter" data-event-filter-id="2">
+BMX <span
+class="highlight">(67)</span>
+</a></li><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=3" class="subnav__label load_event_filter" data-event-filter-id="3">
+Cycle Speedway <span
+class="highlight">(120)</span>
+</a></li><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=4" class="subnav__label load_event_filter" data-event-filter-id="4">
+Cyclo-Cross <span
+class="highlight">(78)</span>
+</a></li><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=7" class="subnav__label load_event_filter" data-event-filter-id="7">
+Mountain Biking <span
+class="highlight">(85)</span>
+</a></li><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=34" class="subnav__label load_event_filter" data-event-filter-id="34">
+Go-Ride Racing <span
+class="highlight">(113)</span>
+</a></li><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=16" class="subnav__label load_event_filter" data-event-filter-id="16">
+Offroad Endurance <span
+class="highlight">(7)</span>
+</a></li><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=5" class="subnav__label load_event_filter" data-event-filter-id="5">
+Cyclo-Sportives <span
+class="highlight">(175)</span>
+</a></li><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=17" class="subnav__label load_event_filter" data-event-filter-id="17">
+Recreation <span
+class="highlight">(901)</span>
+</a></li><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=21" class="subnav__label load_event_filter" data-event-filter-id="21">
+Road <span
+class="highlight">(603)</span>
+</a></li><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=29" class="subnav__label load_event_filter" data-event-filter-id="29">
+Track <span
+class="highlight">(190)</span>
+</a></li><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=33" class="subnav__label load_event_filter" data-event-filter-id="33">
+Coaching Session <span
+class="highlight">(44)</span>
+</a></li><li
+class="subnav__item">
+<a
+href="/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=35" class="subnav__label load_event_filter" data-event-filter-id="35">
+Go-Ride <span
+class="highlight">(193)</span>
+</a></li><li
+class="subnav__item">
+<a
+class="button button--small button--filter-toggle" href="#">Advanced Filters</a></li><li
+class="subnav__item">
+<a
+class="button button--small button--secondary" href="/events?search_type=upcomingevents">All Events</a></li></ul></li><li
+class="subnav__item">
+<a
+href="/events/results" class="subnav__label" id="event-finder-list-results" data-autoexpand_requires="form[action=&quot;/events/results&quot;], #event_details_body:has(#results)" >Results & Past Events</a><ul
+class="subnav__list subnav__list--faceted js-safe-hide"><li
+class="subnav__item">
+<a
+href="/events/results?zuv_bc_event_filter_id[]=2" class="subnav__label load_event_filter" data-event-filter-id="2">
+BMX
+</a></li><li
+class="subnav__item">
+<a
+href="/events/results?zuv_bc_event_filter_id[]=3" class="subnav__label load_event_filter" data-event-filter-id="3">
+Cycle Speedway
+</a></li><li
+class="subnav__item">
+<a
+href="/events/results?zuv_bc_event_filter_id[]=4" class="subnav__label load_event_filter" data-event-filter-id="4">
+Cyclo-Cross
+</a></li><li
+class="subnav__item">
+<a
+href="/events/results?zuv_bc_event_filter_id[]=7" class="subnav__label load_event_filter" data-event-filter-id="7">
+Mountain Biking
+</a></li><li
+class="subnav__item">
+<a
+href="/events/results?zuv_bc_event_filter_id[]=34" class="subnav__label load_event_filter" data-event-filter-id="34">
+Go-Ride Racing
+</a></li><li
+class="subnav__item">
+<a
+href="/events/results?zuv_bc_event_filter_id[]=16" class="subnav__label load_event_filter" data-event-filter-id="16">
+Offroad Endurance
+</a></li><li
+class="subnav__item">
+<a
+href="/events/results?zuv_bc_event_filter_id[]=5" class="subnav__label load_event_filter" data-event-filter-id="5">
+Cyclo-Sportives
+</a></li><li
+class="subnav__item">
+<a
+href="/events/results?zuv_bc_event_filter_id[]=17" class="subnav__label load_event_filter" data-event-filter-id="17">
+Recreation
+</a></li><li
+class="subnav__item">
+<a
+href="/events/results?zuv_bc_event_filter_id[]=21" class="subnav__label load_event_filter" data-event-filter-id="21">
+Road
+</a></li><li
+class="subnav__item">
+<a
+href="/events/results?zuv_bc_event_filter_id[]=29" class="subnav__label load_event_filter" data-event-filter-id="29">
+Track
+</a></li><li
+class="subnav__item">
+<a
+href="/events/results?zuv_bc_event_filter_id[]=33" class="subnav__label load_event_filter" data-event-filter-id="33">
+Coaching Session
+</a></li><li
+class="subnav__item">
+<a
+href="/events/results?zuv_bc_event_filter_id[]=35" class="subnav__label load_event_filter" data-event-filter-id="35">
+Go-Ride
+</a></li><li
+class="subnav__item">
+<a
+class="button button--small button--filter-toggle" href="#">Advanced Filters</a></li><li
+class="subnav__item">
+<a
+class="button button--small button--secondary" href="/events/results?">All Results</a></li></ul></li><li
+class="subnav__item">
+<a
+href="javascript:void(0);" class="subnav__label is-active">Rankings</a><ul
+class="subnav__list subnav__list--faceted"><li
+class="subnav__item">
+<a
+class="subnav__label" href="/aboutrankings">About rankings</a></li><li
+class="subnav__item">
+<a
+class="subnav__label" href="/ranking/national/?year=2017">National rankings</a></li><li
+class="subnav__item">
+<a
+class="subnav__label" href="/ranking/regional/?year=2017">Regional rankings</a></li><li
+class="subnav__item">
+<a
+class="subnav__label" href="/ranking/activity/">Activity rankings</a></li><li
+class="subnav__item">
+<a
+class="subnav__label" href="/clubpoints">Club Points</a></li></ul></li></ul>
+</nav>
+			</div>
+			<div class="grid-desktop-col-5-6 grid-tablet-col-3-4">
+				<article class="article article--landing">
+					<div class="grid-desktop-wrap grid-tablet-wrap">
+						<div class="">
+							<div class="grid-desktop-col-full grid-tablet-col-full">
+								
+																	<header class="article__header article__header--page-opener">
+										<div class="grid-desktop-wrap grid-tablet-wrap">
+											<div class="grid-desktop-col-full grid-tablet-col-full">
+																									<h1 class="article__header__title-opener">Events</h1>
+																							</div>
+																					</div>
+									</header>
+															</div>
+													</div>
+						<div class="grid-desktop-col-full grid-tablet-col-full"><div class="dialog-wrapper">
+	<table class="table table__thin--row" summary="List of entrants in this race">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Club name</th>
+			</tr>
+		</thead>
+		<tbody>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=12735&year=2017&d=4">
+								Craig Adams
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=409&year=2017&type=national">
+								Leslie Bike Shop/Bikers Boutique
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=134283&year=2017&d=4">
+								Frank Anderson
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2299&year=2017&type=national">
+								Scottish Veterans T.T.A.
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=588174&year=2017&d=4">
+								Morgan Anderson
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7983&year=2017&type=national">
+								Pro Vision Scotland
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=14643&year=2017&d=4">
+								Graham Barclay
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=409&year=2017&type=national">
+								Leslie Bike Shop/Bikers Boutique
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=63117&year=2017&d=4">
+								Stephen Beech
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=33051&year=2017&d=4">
+								Robert Brown
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7661&year=2017&type=national">
+								EH Star Cycling
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=210896&year=2017&d=4">
+								Alan Brown
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=3609&year=2017&type=national">
+								Stirling Bike Club
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													Andy Bruce
+											</td>
+					<td>
+													Leslie Bike Shop/Bikers Boutique
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=60171&year=2017&d=4">
+								Craig Buchanan
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1321&year=2017&type=national">
+								Dunfermline CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=100958&year=2017&d=4">
+								Duncan Buchanan
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2690&year=2017&type=national">
+								Fife Century RC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=53749&year=2017&d=4">
+								William Bunyan
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1321&year=2017&type=national">
+								Dunfermline CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=528631&year=2017&d=4">
+								Daniel Cain
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7207&year=2017&type=national">
+								Billy Bilsland Cycles
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=23279&year=2017&d=4">
+								Stephen Clayton
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=26258&year=2017&d=4">
+								Elizabeth Clayton
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=3609&year=2017&type=national">
+								Stirling Bike Club
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=409265&year=2017&d=4">
+								Dave Conacher
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7995&year=2017&type=national">
+								Saints Ciclista 
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													Angela  Dixon
+											</td>
+					<td>
+													Dunfermline CC
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=654296&year=2017&d=4">
+								Ian Dobbie
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1365&year=2017&type=national">
+								West Lothian Clarion CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=76049&year=2017&d=4">
+								Murray Doyle
+							</a>
+											</td>
+					<td>
+													Bute Wheelers
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=268485&year=2017&d=4">
+								Mark Dryburgh
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1251&year=2017&type=national">
+								Ross-Shire RCC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=65542&year=2017&d=4">
+								Iain Duguid
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2299&year=2017&type=national">
+								Scottish Veterans T.T.A.
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													Peter Ettles
+											</td>
+					<td>
+													RT 23
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=8393&year=2017&d=4">
+								Anna Fairweather
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1802&year=2017&type=national">
+								Spokes Racing Team
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=45996&year=2017&d=4">
+								Isobel Fletcher
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=211&year=2017&type=national">
+								VC Glasgow South
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=136073&year=2017&d=4">
+								Michael Giles
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2849&year=2017&type=national">
+								Ythan CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=44562&year=2017&d=4">
+								Silas Goldsworthy
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=51734&year=2017&d=4">
+								Kyle Gordon
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=15398&year=2017&d=4">
+								Michael Gordon
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1422&year=2017&type=national">
+								Moray Firth Cycling Club
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=55504&year=2017&d=4">
+								James Hall
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1798&year=2017&type=national">
+								Rock And Road
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=49743&year=2017&d=4">
+								David Harter
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=3224&year=2017&type=national">
+								Forres CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=12477&year=2017&d=4">
+								Janette Hazlett
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2992&year=2017&type=national">
+								Glasgow Ivy CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=131861&year=2017&d=4">
+								Danny Hedley
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=379203&year=2017&d=4">
+								Pamela Irving
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7974&year=2017&type=national">
+								Carnoustie Cycling Club
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=275514&year=2017&d=4">
+								Stewart Irving
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7974&year=2017&type=national">
+								Carnoustie Cycling Club
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=10187&year=2017&d=4">
+								Luke Johnstone
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1516&year=2017&type=national">
+								Falkirk Bicycle Club
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=703760&year=2017&d=4">
+								Kevin Kelly
+							</a>
+											</td>
+					<td>
+													unattached
+											</td>
+				</tr>
+							<tr>
+					<td>
+													Macaulay Kenny
+											</td>
+					<td>
+													---
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=105407&year=2017&d=4">
+								Ian King
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=4432&year=2017&type=national">
+								Velocity 44 RT
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=324692&year=2017&d=4">
+								Kieran Kirk
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=6412&year=2017&type=national">
+								Team Right Move Windows
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=37703&year=2017&d=4">
+								David Kirton
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2899&year=2017&type=national">
+								Kennoway RC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=400672&year=2017&d=4">
+								Colin Knott
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2854&year=2017&type=national">
+								Pedal Power RT
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=24544&year=2017&d=4">
+								Kevin Lackie
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=68919&year=2017&d=4">
+								Gavin Laffoley
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2690&year=2017&type=national">
+								Fife Century RC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=61900&year=2017&d=4">
+								Martin Lonie
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=5462&year=2017&type=national">
+								Clay Cross Road Team
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=54208&year=2017&d=4">
+								James MacDonald
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1365&year=2017&type=national">
+								West Lothian Clarion CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=390375&year=2017&d=4">
+								Catriona MacGillivray
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=312181&year=2017&d=4">
+								Ewen Macgillivray
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=221507&year=2017&d=4">
+								Alexander MacRae
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7983&year=2017&type=national">
+								Pro Vision Scotland
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=590010&year=2017&d=4">
+								Stephen Makin
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1516&year=2017&type=national">
+								Falkirk Bicycle Club
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=320514&year=2017&d=4">
+								Georgia Mansfield
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=385737&year=2017&d=4">
+								Joe McFadyen
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=374&year=2017&type=national">
+								Dundee Wheelers CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=235150&year=2017&d=4">
+								Joseph McMillan
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7242&year=2017&type=national">
+								Synergy Cycles
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=585627&year=2017&d=4">
+								Liam McNamara
+							</a>
+											</td>
+					<td>
+													---
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=40609&year=2017&d=4">
+								David Millar
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2299&year=2017&type=national">
+								Scottish Veterans T.T.A.
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=7935&year=2017&d=4">
+								Stewart Mitchell
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1486&year=2017&type=national">
+								Deeside Thistle CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=410729&year=2017&d=4">
+								Alasdair Munro
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=201161&year=2017&d=4">
+								Robert Murray
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2899&year=2017&type=national">
+								Kennoway RC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=39751&year=2017&d=4">
+								Steve Nutley
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=235446&year=2017&d=4">
+								Karena O&#039;Hanlon
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=409&year=2017&type=national">
+								Leslie Bike Shop/Bikers Boutique
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=191833&year=2017&d=4">
+								Neil Pendrich
+							</a>
+											</td>
+					<td>
+													Gala Cycling Club
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=241234&year=2017&d=4">
+								Jamie Penny
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1845&year=2017&type=national">
+								Discovery Junior Cycling Club
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=272527&year=2017&d=4">
+								Jim Petrie
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=374&year=2017&type=national">
+								Dundee Wheelers CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=66537&year=2017&d=4">
+								Victor Possee
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=3028&year=2017&type=national">
+								Bush Healthcare CRT
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=28925&year=2017&d=4">
+								David Pritchard
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2899&year=2017&type=national">
+								Kennoway RC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=291990&year=2017&d=4">
+								Sean Quinn
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=857&year=2017&type=national">
+								Law Wheelers CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=21637&year=2017&d=4">
+								Gwynneth Rixon
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=493868&year=2017&d=4">
+								Allan Shearer
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=4432&year=2017&type=national">
+								Velocity 44 RT
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=104748&year=2017&d=4">
+								John Shelley
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=3679&year=2017&type=national">
+								Perth United Cycling Club
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=34458&year=2017&d=4">
+								George Skinner
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2299&year=2017&type=national">
+								Scottish Veterans T.T.A.
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=78831&year=2017&d=4">
+								James Skinner
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2299&year=2017&type=national">
+								Scottish Veterans T.T.A.
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=510498&year=2017&d=4">
+								Graham Smith
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=857&year=2017&type=national">
+								Law Wheelers CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=15828&year=2017&d=4">
+								Michael Spalding
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=3215&year=2017&type=national">
+								Granite City RT
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=17995&year=2017&d=4">
+								Andrew Stewart
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1321&year=2017&type=national">
+								Dunfermline CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=221240&year=2017&d=4">
+								Jordan Stronach
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=2849&year=2017&type=national">
+								Ythan CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=441181&year=2017&d=4">
+								Ross Thomson
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1321&year=2017&type=national">
+								Dunfermline CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=79107&year=2017&d=4">
+								Alan Thomson
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=381589&year=2017&d=4">
+								Amanda Tweedie
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7866&year=2017&type=national">
+								RT 23
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=167449&year=2017&d=4">
+								Douglas Watson
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1914&year=2017&type=national">
+								Icarus Racing
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=560760&year=2017&d=4">
+								Christopher White
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=7047&year=2017&type=national">
+								Gamma Racing Team
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=410315&year=2017&d=4">
+								Sarah Williams
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1365&year=2017&type=national">
+								West Lothian Clarion CC
+							</a>
+											</td>
+				</tr>
+							<tr>
+					<td>
+													Sarah Williams
+											</td>
+					<td>
+													Fife Century RC
+											</td>
+				</tr>
+							<tr>
+					<td>
+													<a target="_blank" href="/points?person_id=18968&year=2017&d=4">
+								Angus Wilson
+							</a>
+											</td>
+					<td>
+													<a target="_blank" href="/clubpoints?club_id=1406&year=2017&type=national">
+								Dundee Thistle RC
+							</a>
+											</td>
+				</tr>
+					</tbody>
+	</table>
+</div></div>											</div>
+				</article>
+			</div>
+		</div>
+	</div>
+</main>			
+																																																																																							<footer class="footer ">
+<div class="">
+<div class="footer__national-strip">
+</div>
+<div class="footer__main">
+<div class="grid-tablet-wrap grid-desktop-wrap"><div class="grid-tablet-col-1-3 grid-desktop-col-1-4">
+<div class="footer__main__athlete">
+<picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/441/549/zuvvi/media/bc_images/bc_gb/2017/2017010-gbct-jody_cundy-profile-footer.1483186089.png, /882/1098/zuvvi/media/bc_images/bc_gb/2017/2017010-gbct-jody_cundy-profile-footer.1483186089.png 2x" media="(min-width: 1025px)">
+<source
+srcset="/368/458/zuvvi/media/bc_images/bc_gb/2017/2017010-gbct-jody_cundy-profile-footer.1483186089.png, /736/916/zuvvi/media/bc_images/bc_gb/2017/2017010-gbct-jody_cundy-profile-footer.1483186089.png 2x" media="(min-width: 641px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/0/1/zuvvi/media/bc_images/bc_gb/2017/2017010-gbct-jody_cundy-profile-footer.1483186089.png"
+srcset ="/0/1/zuvvi/media/bc_images/bc_gb/2017/2017010-gbct-jody_cundy-profile-footer.1483186089.png, /0/2/zuvvi/media/bc_images/bc_gb/2017/2017010-gbct-jody_cundy-profile-footer.1483186089.png 2x" alt ="Jody Cundy">
+</picture>
+</div>
+</div>
+<div class="grid-tablet-col-2-3 grid-desktop-col-3-4"><div class="grid-tablet-wrap grid-tablet-wide-wrap grid-desktop-wrap">
+<div class="grid-tablet-col-full grid-tablet-wide-col-2-3">
+<div class="footer__main__content">
+<h3 class="footer__athlete-quote">“Suitable for all levels, British Cycling actively encourages everyone from fans and riders to cycling enthusiasts and professionals.”</h3>
+<p ></p>
+<p class="footer__athlete-name">Jody Cundy</p>
+<p class="footer-cta-button"><a class="button button--secondary" href="/about">About British Cycling</a></p>
+<p class="footer-cta-button"><a class="button" href=/membership>Join Us</a></p>
+<nav class="footer__links">
+<ul>
+<li><a href="/about/article/bcst-Contact-Us">Contact us</a></li>
+<li><a href="/about/article/bcst_rulebook_and_constitution">Rules &amp; constitution</a></li>
+<li><a href="/about/ourpartners">Our partners</a></li>
+<li><a href="/vacancies">Vacancies</a></li>
+<li><a href="/about/article/Website-Terms-and-Conditions-0">Terms of use</a></li>
+<li><a href="/about/article/info--Privacy-Policy-0">Privacy policy</a></li>
+<li><a href="/about/article/info-Cookies-0">Cookies</a></li>
+<li><a href="/antidoping">Anti-doping</a></li>
+<li><a href="/safeguarding">Safeguarding</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="grid-tablet-col-full grid-tablet-wide-col-3-9 grid-desktop-col-2-9">
+<div class="footer__main__social">
+<div class="grid-mobile-wrap grid-tablet-wrap grid-tablet-wide-wrap ">
+<div class="grid-mobile-col-full grid-tablet-col-1-3 grid-tablet-wide-col-full">
+<div class="logo">
+<a href="/">
+<picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/200//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png, /400//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png 2x" media="(min-width: 0px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/200//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png"
+srcset ="/200//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png, /400//zuvvi/ext/template/bc/tpl_global_page/design/assets/img/bc-logo.1483185500.png 2x" alt ="British Cycling">
+</picture>
+</a>
+</div>
+</div>
+<div class="grid-mobile-col-1-2 grid-tablet-col-1-3 grid-tablet-wide-col-full ">
+<div class="footer__main__social__address">
+<address>
+British Cycling,<br />
+Stuart Street,<br />
+Manchester M11 4DQ
+</address>
+<p><a href="tel:+441612742000">Tel 0161 274 2000</a><br /></p>
+</div>
+</div>
+<div class="grid-mobile-col-1-2 grid-tablet-col-1-3 grid-tablet-wide-col-full ">
+<div class="footer__main__social__links">
+<ul>
+<li class="footer__social__link footer__social__link--facebook">
+<a href="https://www.facebook.com/britishcycling" target="_blank">Facebook</a></li>
+<li class="footer__social__link footer__social__link--twitter">
+<a href="https://twitter.com/britishcycling" target="_blank">Twitter</a></li>
+<li class="footer__social__link footer__social__link--youtube">
+<a href="https://www.youtube.com/britishcycling" target="_blank">Youtube</a></li>
+<li class="footer__social__link footer__social__link--flickr">
+<a href="https://www.flickr.com/photos/britishcycling/" target="_blank">Flickr</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer__logo-bar-wrap">
+<div class="grid-mobile-wrap grid-tablet-wrap grid-desktop-wrap">
+<div class="grid-mobile-col-full grid-tablet-col-10-12 grid-tablet-offset-1-12 grid-desktop-col-10-12 grid-desktop-offset-1-12">
+<div class="footer__logo-bar">
+<div class="grid-mobile-wrap grid-tablet-wrap grid-desktop-wrap">
+<div class="grid-mobile-col-1-2 grid-tablet-col-1-3 grid-desktop-col-1-3">
+<a href="/about/article/20161223-about-bc-static-HSBC-UK-0">
+<picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/120//zuvvi/media/bc_images/bc_misc/about/2017/HSBC-UK-Master-Brand-RETINA-350.1483185844.png, /240//zuvvi/media/bc_images/bc_misc/about/2017/HSBC-UK-Master-Brand-RETINA-350.1483185844.png 2x" media="(min-width: 0px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/120//zuvvi/media/bc_images/bc_misc/about/2017/HSBC-UK-Master-Brand-RETINA-350.1483185844.png"
+srcset ="/120//zuvvi/media/bc_images/bc_misc/about/2017/HSBC-UK-Master-Brand-RETINA-350.1483185844.png, /240//zuvvi/media/bc_images/bc_misc/about/2017/HSBC-UK-Master-Brand-RETINA-350.1483185844.png 2x" alt ="HSBC UK">
+</picture>
+</a>
+</div><div class="grid-mobile-col-1-2 grid-tablet-col-1-3 grid-desktop-col-1-3">
+<a href="/about/article/bc20120312-about-bc-static-Funding-Partner---UK-Sport-0">
+<picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/120//zuvvi/media/bc_images/bc_misc/about/2017/1412_UKSPORT_TNL_70_RETINA-350.1483185858.png, /240//zuvvi/media/bc_images/bc_misc/about/2017/1412_UKSPORT_TNL_70_RETINA-350.1483185858.png 2x" media="(min-width: 0px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/120//zuvvi/media/bc_images/bc_misc/about/2017/1412_UKSPORT_TNL_70_RETINA-350.1483185858.png"
+srcset ="/120//zuvvi/media/bc_images/bc_misc/about/2017/1412_UKSPORT_TNL_70_RETINA-350.1483185858.png, /240//zuvvi/media/bc_images/bc_misc/about/2017/1412_UKSPORT_TNL_70_RETINA-350.1483185858.png 2x" alt ="UK Sport">
+</picture>
+</a>
+</div><div class="grid-mobile-col-1-2 grid-tablet-col-1-3 grid-desktop-col-1-3">
+<a href="/about/article/bc20120312-about-bc-static-Funding-Partner---Sport-England-0">
+<picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/120//zuvvi/media/bc_images/bc_misc/about/2017/3011_SPORT_ENGLAND_TNL_70_RETINA-350.1483185870.png, /240//zuvvi/media/bc_images/bc_misc/about/2017/3011_SPORT_ENGLAND_TNL_70_RETINA-350.1483185870.png 2x" media="(min-width: 0px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/120//zuvvi/media/bc_images/bc_misc/about/2017/3011_SPORT_ENGLAND_TNL_70_RETINA-350.1483185870.png"
+srcset ="/120//zuvvi/media/bc_images/bc_misc/about/2017/3011_SPORT_ENGLAND_TNL_70_RETINA-350.1483185870.png, /240//zuvvi/media/bc_images/bc_misc/about/2017/3011_SPORT_ENGLAND_TNL_70_RETINA-350.1483185870.png 2x" alt ="Sport England">
+</picture>
+</a>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer__closer">
+<div class="grid-tablet-wrap grid-desktop-wrap">
+<div class="grid-tablet-col-10-12 grid-tablet-offset-1-12 grid-desktop-col-10-12 grid-desktop-offset-1-12">
+<div class="grid-tablet-wrap grid-tablet-wide-wrap grid-desktop-wrap">
+<div class="grid-tablet-col-1-2 grid-tablet-wide-col-1-5">
+<p>&copy; 2017 British Cycling<br />All Rights Reserved.</p>
+</div>
+<div class="grid-tablet-col-1-2 grid-tablet-wide-col-2-5 grid-tablet-wide-offset-2-5">
+<div class="grid-mobile-wrap grid-tablet-wrap grid-desktop-wrap">
+<div class="grid-mobile-col-1-2 grid-tablet-col-1-2 grid-desktop-col-1-2">
+<div class="logo">
+<a href="/scotland">
+<picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/200//zuvvi/media/branding/bc_logo_footer_whiteout_scottish.1481905399.png, /400//zuvvi/media/branding/bc_logo_footer_whiteout_scottish.1481905399.png 2x" media="(min-width: 0px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/200//zuvvi/media/branding/bc_logo_footer_whiteout_scottish.1481905399.png"
+srcset ="/200//zuvvi/media/branding/bc_logo_footer_whiteout_scottish.1481905399.png, /400//zuvvi/media/branding/bc_logo_footer_whiteout_scottish.1481905399.png 2x" alt ="Scottish Cycling">
+</picture>
+</a>
+</div>
+</div>
+<div class="grid-mobile-col-1-2 grid-tablet-col-1-2 grid-desktop-col-1-2">
+<div class="logo">
+<a href="/wales">
+<picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/200//zuvvi/media/branding/bc_logo_footer_whiteout_welsh.1481905399.png, /400//zuvvi/media/branding/bc_logo_footer_whiteout_welsh.1481905399.png 2x" media="(min-width: 0px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/200//zuvvi/media/branding/bc_logo_footer_whiteout_welsh.1481905399.png"
+srcset ="/200//zuvvi/media/branding/bc_logo_footer_whiteout_welsh.1481905399.png, /400//zuvvi/media/branding/bc_logo_footer_whiteout_welsh.1481905399.png 2x" alt ="Welsh Cycling">
+</picture>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</footer>
+																				<article
+id="article_section" class="article article--login-register" style="display: none"><div
+class="grid-desktop-wrap grid-tablet-wrap"><div
+class="grid-desktop-col-full grid-tablet-col-full">
+<header
+class="article__header article__header--page-opener"><h1 class="article__header__title-opener">Get into British Cycling</h1>
+</header></div><div
+class="grid-desktop-col-7-10 grid-tablet-col-full"><div
+class="tabs article--login-register__tabs ui-tabs ui-widget ui-widget-content ui-corner-all"><nav
+class="tabs__nav">
+<span
+class="more-content more-content--left js-safe-hide"></span><ul
+class="tabs__list ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist"><li
+class="tabs__item ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tab-box-register" aria-labelledby="tab-register" aria-selected="false" aria-expanded="false">
+<a
+id="tab-register" class="tabs__button ui-tabs-anchor" href="#tab-box-register" role="presentation" tabindex="-1">Register</a></li><li
+class="tabs__item ui-state-default ui-corner-top" role="tab" tabindex="0" aria-controls="tab-box-login" aria-labelledby="tab-login" aria-selected="true" aria-expanded="true">
+<a
+id="tab-login"  class="tabs__button ui-tabs-anchor" href="#tab-box-login" role="presentation" tabindex="-1">Login</a></li><li
+class="tabs__item ui-state-default ui-corner-top" role="tab" tabindex="0" aria-controls="recover-content" aria-labelledby="tab-recover" aria-selected="false" aria-expanded="false">
+<a
+id="tab-recover"  class="tabs__button ui-tabs-anchor" href="#recover-content" role="presentation" tabindex="-1">Recover</a></li></ul>
+<span
+class="more-content more-content--right js-safe-hide"></span>
+</nav><div
+id="tab-box-register" class="tabs__content ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="tab-register" role="tabpanel" aria-hidden="true" style="display: none;"><h2 id="sign_up-title">Register with British Cycling Today, it's Free!</h2><p
+id="sign_up-email_message"></p><hr><div
+class="grid-desktop-wrap"><div
+class="grid-desktop-col-full">
+<a
+id="member_auth-register-fb" class="button button--large button--facebook button--block" href="/dashboard" data-page-path="/uac/register">Sign-up with Facebook</a></div><div
+class="grid-desktop-col-full">
+<a
+id="member_auth-register" class="button button--large button--block button--basic-toggle" href="/dashboard" data-page-path="/uac/register" data-toggle-id="member_auth">Register</a></div></div>
+<!--[if IE]><style type="text/css">.gradient {
+			background: #E2E2E2 url(/zuvvi/ext/component/bc/com_bc_eventfinder/img/tab_bg.png) repeat-y left !important;
+		}</style><![endif]--><!--[if !IE]><style type="text/css">#left_pane .lp_tab {
+	    	border-top-left-radius: 6px;
+	    	border-bottom-left-radius: 6px;
+    	}</style><![endif]--><div
+id="member_auth" class="article--login-register__reg-form toggle-target" ><div
+id="accordion_sign_up_sign_in" class="grid-tablet-wrap" ><form
+id='create_acct_form' autocomplete="off" method="post"><div
+class="grid-tablet-col-1-2"><div
+class="form__item form__item--string"><h4>First name:</h4>
+<input
+id="forename" class="form__field form__field--string" type="text" name="forename" ><h5 class="error"  id="forename_error">Please enter your first name.</h5></div></div><div
+class="grid-tablet-col-1-2"><div
+class="form__item form__item--string"><h4>Last name:</h4>
+<input
+id="surname" class="form__field form__field--string" type="text" name="surname" ><h5 class="error" id="surname_error">Please enter your surname.</h5></div></div><div
+class="grid-tablet-col-1-2"><div
+id="sign_up-email" class="form__item form__item--string"><h4>Email Address:</h4>
+<input
+id="email" class="form__field form__field--string validate_email" type="text" name="email" ><h5 class="error"  id="email_error">Please enter your E-Mail address.</h5></div></div><div
+class="grid-tablet-col-1-2"><div
+class="form__item form__item--string"><h4>Confirm Email:</h4>
+<input
+id="cemail" class="form__field form__field--string" type="text" name="cemail"><h5 class="error" id="cemail_error">Please confirm your E-Mail address.</h5></div></div><div
+class="grid-tablet-col-1-2"><div
+class="form__item form__item--string"><h4>Password:</h4>
+<input
+id="password3" class="form__field form__field--string form__field--password" type="password" name="password3"><h5 class="error" id="password3_error">Please enter a password.</h5></div></div><div
+class="grid-tablet-col-1-2"><div
+class="form__item form__item--string"><h4>Confirm Password:</h4>
+<input
+id="cpassword" class="form__field form__field--string form__field--password" type="password" name="cpassword" required><h5 class="error" id="cpassword_error">Please confirm your password.</h5></div></div><div
+id="sign_up-gender" class="grid-tablet-col-1-2"><div
+class="form__item form__item--select"><h4>Gender:</h4><div
+class="select-wrap">
+<select
+id="gender" class="form__field form__field--select" name="gender" data-msg-required=""><option
+value='M'>Male</option><option
+value='F'>Female</option>
+</select></div><h5 class="error" id="password3_error">Please select your gender.</h5></div></div><div
+class="grid-tablet-col-full"><div
+class="grid-tablet-wrap"><div
+class="grid-tablet-col-1-2"><h4>I'm interested in:</h4><fieldset
+class="form__group"><div
+class="grid-tablet-wide-wrap half-gutter"><div
+class="grid-tablet-wide-col-1-2"><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="road_and_track">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">Road/Track</label></div><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="mtb">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">MTB</label></div><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="cycle_speedway">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">Cycle Speedway</label></div><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="bmx">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">BMX</label></div></div><div
+class="grid-tablet-wide-col-1-2"><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="cyclocross">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">Cyclocross</label></div><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="fan_updates">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">Fan Updates</label></div></div></div></fieldset></div><div
+class="grid-tablet-col-1-2"><h4>The type of riding I do is:</h4><fieldset
+class="form__group"><div
+class="grid-tablet-wide-wrap half-gutter"><div
+class="grid-tablet-wide-col-1-2"><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="racing">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">Racing</label></div><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="sportives">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">Sportives</label></div><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="club_rides">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">Club Rides</label></div><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="commuting">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">Commuting</label></div></div><div
+class="grid-tablet-wide-col-1-2"><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="leisure">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">Leisure Rides</label></div><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="family">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">Family Rides</label></div><div
+class="form__item form__item--boolean form__item--group">
+<input
+class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="additional_interests[]" value="not_a_cyclist">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">I am not an active cyclist</label></div></div></div></fieldset></div></div></div><div
+class="grid-tablet-col-full"><hr><div
+class="grid-tablet-wrap"><div
+class="grid-tablet-col-1-2"><fieldset
+class="form__group"><div
+class="form__item form__item--boolean form__item--group">
+<input
+id="over_12" class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="over_12">
+<label
+class="form__label form__label--boolean form__label--group" for="over_12">I am aged over 16 or have permission from my guardian</label></div><div
+class="form__item form__item--boolean form__item--group">
+<input
+id="tsandcs" class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" name="tsandcs" >
+<label
+class="form__label form__label--boolean form__label--group" for="tsandcs">
+I have read and accept the
+<a
+id="sign_up-terms_and_conditions" target="_blank" href="/staticcontent/Website-Terms-and-Conditions-0">Terms and Conditions.</a>
+</label></div><div
+class="form__item form__item--boolean form__item--group">
+<input
+type="hidden" name="marketing_preferences[allow_all_email_marketing]" value="0"><input
+type="checkbox" name="marketing_preferences[allow_all_email_marketing]" id="marketing_preferences-allow_all_email_marketing" value="1" checked="checked">&nbsp;<label
+class="form__label form__label--boolean form__label--group" for="marketing_preferences-allow_all_email_marketing">Send me info and updates from British Cycling.<span
+class="icon icon--font icon--font--info tooltip"
+alt="Info"
+title="We won&#039;t pass your details on to to any third parties but we will send you the occasional update"
+data-content="We won&#039;t pass your details on to to any third parties but we will send you the occasional update"
+>
+</span></label><br
+/></div></fieldset></div><div
+class="grid-tablet-col-1-2"><p
+class="no-margin-top">
+We value your privacy and protect your data.
+<a
+href="/staticcontent/info--Privacy-Policy-0">Find out more</a>.</p><div
+id="register_errors" class='error sign_up_sign_in_form_errors'></div><p>
+<a
+id="create_account_button" class="button button--xlarge button--block" href="">Register Now</a></p></div></div></div></form></div></div><hr><h4>Registered user benefits include:</h4><div
+class="editorial-box"><div
+class="editorial-box__section"><div
+class="grid-tablet-wrap grid-float-fix half-gutter"><div
+class="grid-tablet-col-1-2"><div
+class="editorial-box__unit editorial-box__unit--small"><div
+class="grid-mobile-wrap grid-desktop-wrap"><div
+class="grid-mobile-col-1-4 grid-desktop-col-1-3"><div
+class="editorial-box__unit__image-wrap">
+<a> <picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/136/136/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/news.1414484513.jpg, /272/272/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/news.1414484513.jpg 2x" media="(min-width: 1200px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/136/136/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/news.1414484513.jpg"
+srcset ="/136/136/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/news.1414484513.jpg, /272/272/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/news.1414484513.jpg 2x" alt ="" class = "editorial-box__unit__image-wrap__image">
+</picture> </a></div></div><div
+class="grid-mobile-col-3-4 grid-desktop-col-2-3"><div
+class="editorial-box__unit__content"><h3 class="editorial-box__unit__content__title">
+<a>News to your Inbox</a></h3><p>Receive a complimentary copy of our weekly members e-newsletter.</p></div></div></div></div></div><div
+class="grid-tablet-col-1-2"><div
+class="editorial-box__unit editorial-box__unit--small"><div
+class="grid-mobile-wrap grid-desktop-wrap"><div
+class="grid-mobile-col-1-4 grid-desktop-col-1-3"><div
+class="editorial-box__unit__image-wrap">
+<a> <picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/136/136/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/video-tips.1414484513.png, /272/272/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/video-tips.1414484513.png 2x" media="(min-width: 1200px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/136/136/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/video-tips.1414484513.png"
+srcset ="/136/136/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/video-tips.1414484513.png, /272/272/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/video-tips.1414484513.png 2x" alt ="" class = "editorial-box__unit__image-wrap__image">
+</picture> </a></div></div><div
+class="grid-mobile-col-3-4 grid-desktop-col-2-3"><div
+class="editorial-box__unit__content"><h3 class="editorial-box__unit__content__title">
+<a>Video tips</a></h3><p>We&#039;ll send you videos of our top cycling tips and techniques.</p></div></div></div></div></div><div
+class="grid-tablet-col-1-2"><div
+class="editorial-box__unit editorial-box__unit--small"><div
+class="grid-mobile-wrap grid-desktop-wrap"><div
+class="grid-mobile-col-1-4 grid-desktop-col-1-3"><div
+class="editorial-box__unit__image-wrap">
+<a> <picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/136/136/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/offers.1414484513.jpg, /272/272/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/offers.1414484513.jpg 2x" media="(min-width: 1200px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/136/136/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/offers.1414484513.jpg"
+srcset ="/136/136/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/offers.1414484513.jpg, /272/272/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/offers.1414484513.jpg 2x" alt ="" class = "editorial-box__unit__image-wrap__image">
+</picture> </a></div></div><div
+class="grid-mobile-col-3-4 grid-desktop-col-2-3"><div
+class="editorial-box__unit__content"><h3 class="editorial-box__unit__content__title">
+<a>Exclusive Offers</a></h3><p>Great offers on becoming a British Cycling member, however you ride.</p></div></div></div></div></div><div
+class="grid-tablet-col-1-2"><div
+class="editorial-box__unit editorial-box__unit--small"><div
+class="grid-mobile-wrap grid-desktop-wrap"><div
+class="grid-mobile-col-1-4 grid-desktop-col-1-3"><div
+class="editorial-box__unit__image-wrap">
+<a> <picture>
+<!--[if IE 9]><video
+style="display: none;"><![endif]-->
+<source
+srcset="/136/136/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/events.1414484513.jpg, /272/272/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/events.1414484513.jpg 2x" media="(min-width: 1200px)">
+<!--[if IE 9]></video><![endif]-->
+<img
+src	="/136/136/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/events.1414484513.jpg"
+srcset ="/136/136/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/events.1414484513.jpg, /272/272/zuvvi/ext/component/zuvvi/com_portaclient_version_2/img/events.1414484513.jpg 2x" alt ="" class = "editorial-box__unit__image-wrap__image">
+</picture> </a></div></div><div
+class="grid-mobile-col-3-4 grid-desktop-col-2-3"><div
+class="editorial-box__unit__content"><h3 class="editorial-box__unit__content__title">
+<a>British Cycling Events</a></h3><p>As a registered user, you&#039;ll be able to enter over 4,000 events online.</p></div></div></div></div></div></div></div>
+<footer
+class="editorial-box__footer">
+<a
+id="sign_in" class="button button--secondary" href="/uac/connect">or Join British Cycling Instead</a>
+</footer></div></div><div
+id="tab-box-login" class="tabs__content ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="tab-login" role="tabpanel"  aria-hidden="false"><h2>Login to your British Cycling account.</h2><p
+class="alert-message"></p><div
+id=flash_msg style="display:none;"></div><div
+class="grid-tablet-wide-wrap"><form
+id="login_form" autocomplete="off" name="login_form" action="" method="post"><div
+class="grid-tablet-wide-col-2-3"><div
+class="form__item form__item--string"><h4>Membership number:</h4>
+<input
+id="username2" class="form__field form__field--string" type="text" name="username2" value=""  required><h5 class="error" for="username2" id="username2_error">This field is required.</h5></div><div
+class="form__item form__item--string"><h4>Password:</h4>
+<input
+id="password2" class="form__field form__field--string form__field--password" type="password" name="password2" value="" required><h5 class="error" for="password2" id="password2_error">This field is required.</h5></div><div
+class="form__item form__item--boolean form__item--group">
+<input
+id="remember_me" class="form__field form__field--medium form__field--boolean form__field--checkbox" type="checkbox" checked="checked"name="remember_me" value="1">
+<label
+class="form__label form__label--boolean form__label--group" for="ff-checkbox-1">Remember me</label></div><div
+id="login_errors" style="display:none"><h5 class="error" id="login_errors_label"></h5></div><div
+class="form__actions">
+<button
+id="login_button" class="button button--medium">Login</button>
+<a
+id="member_auth-connect-fb" href="/dashboard" class="button button--medium button--facebook">Login with Facebook</a>
+<input
+type='hidden' id='validcode' name='validcode' value="" /></div></div><div
+class="grid-tablet-wide-col-1-3"><div
+class="article--login-register__help-box"><h5>Help</h5><ul><li>
+I don't know my <a
+id="forgot-passwork-link" href="javascript: void(0)">username/password</a></li><li>
+Not <a
+id="create_account_link" href="javascript:void(0);">registered</a> yet?</li><li>
+Need further help? <a
+href='mailto:membership@britishcycling.org.uk'>Contact us</a></li></ul></div></div></form></div></div><div
+id="recover-content" class="tabs__content ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="tab-recover" role="tabpanel"  aria-hidden="true"><h2>Retrieve your account details</h2><div
+id="event_recover_box" class="grid-tablet-wide-wrap"><div
+id="recover_accordion" class="grid-tablet-wide-col-2-3"><h4>Forgotten password</h4><div
+id="passwd_reset_sectn"><form
+id='event_recover_passwd_form' autocomplete="off" method="post"><div
+class=""><p>If you do not know your password, enter your username and we will send a password reset to your registered email address.</p></div><div
+class="form__item form__item--string"><h4>Username / Membership No:</h4>
+<input
+id='recoverusername' class="form__field form__field--string" type='text'  name='recoverusername' value='' required><br
+/><h5 class="error" for="recoverusername" id="recoverusername_error">This field is required.</h5></div><div
+class='ok_button form__actions'>
+<button
+id='recover_passwd_button' class="button button--medium" >Reset Password</button></div><div
+id="event_recover_passwd_errors" style="display:none"><h5 class="error" id="event_recover_passwd_errors_label"></h5></div></form></div>
+<span
+class="hori_rule"></span><h4>Forgotten username / membership number</h4><div
+id='username_recover_sectn'><form
+id='event_recover_acct_form'><p>If you don't know your username, enter the email address with which your account is registered and we will send you a reminder.</p><div
+class="form__item form__item--string"><h4>E-Mail Address:</h4>
+<input
+id='email2' name='email2'  class="form__field form__field--string validate_email" type='text'  value='' required><br
+/><h5 class="error" for="email2" id="email2_error">This field is required.</h5></div><div
+class='ok_button form__actions'>
+<button
+id='recover_username_button' class="button button--medium" >Get Username</button></div><div
+id="event_recover_username_errors" style="display:none"><h5 class="error" id="event_recover_username_errors_label" style="width: 350px; text-align:left;"></h5></div></form></div></div></div></div></div></div><div
+class="grid-desktop-col-3-10 grid-tablet-col-full"></div></div>
+<input
+type='hidden' id='target_url' value='' /><div
+id="password_confirmation" style="display: none;" title="Link your Facebook Profile to British Cycling"><div
+class="dialog-wrapper"><p>We have found a match between your Facebook account and British Cycling.</p><p>To link accounts please enter your British Cycling password. You only need to do this once.</p><form
+id="confirm_password" autocomplete="off" method="post"><div
+class="grid-tablet-col-1-2"><div
+class="form__item form__item--string"><h4>Password</h4>
+<input
+id="cpassword2" class="form__field form__field--string" type="password" name="cpassword2" value=""><h5 class="error" for="cpassword2" id="cpassword2_error">This field is required.</h5></div><div
+id="confirm_password_errors" style="display: none">
+<label
+class="error" id="confirm_password_errors_label"></label></div></div><div
+class="grid-tablet-col-1-2"><h4>&nbsp;</h4><div
+class="form__actions">
+<button
+id="confirm_password_button" class="button button--medium">Confirm</button>
+<button
+id="confirm_password_cancel_button" class="button button--medium button--secondary">Cancel</button></div></div></form></div></div>
+</article></div><script type="text/javascript">/*  */
+var google_conversion_id = 981364020;
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/*  */</script><script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script><noscript><div
+style="display:inline;"><img
+height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/981364020/?value=0&amp;guid=ON&amp;script=0"/></div></noscript><script type="text/javascript" src="/zuvvi/ext/template/bc/tpl_global_page/js_cache/app.min.1485774358.js"></script>
+<script type="text/javascript" src="/zuvvi/js/jquery/jquery.colorbox.1422363926.js"></script>
+<script type="text/javascript" src="/zuvvi/ext/component/bc/com_bc_eventfinder_list_version_2/js/index.1454494344.js"></script>
+<script type="text/javascript" src="/zuvvi/ext/module/bc/mod_bc_site_ad_version_2/js/sad.1423733249.js"></script><!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-9371888-1', 'auto');
+ga('require', 'displayfeatures');
+ga('require', 'linkid', 'linkid.js');
+ga('send', 'pageview');
+ga('set', 'dimension5','2');
+</script>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"9d2bb6ec35","applicationID":"5077026","transactionName":"Z1IBNxcEC0QAW0YKWl4YIBYWEQpaTlpRTVZfWjwBBjoAQQRWRgVcXlMGEToTAEUSUV0NagIZAgkEHTpFAFtXPFBeQxECCxEWaAVRUw9aVw==","queueTime":0,"applicationTime":253,"atts":"SxUCQV8eGEo=","errorBeacon":"bam.nr-data.net","agent":""}</script></body></html>

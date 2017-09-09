@@ -1,0 +1,29 @@
+
+cache:
+  paths:
+  - node_modules/
+  - .yarn
+
+before_script:
+  - yarn install
+
+stages:
+  - test
+
+test:node:4:
+  image: node:4
+  stage: test
+  script:
+  - yarn test
+
+test:node:6:
+  image: node:6
+  stage: test
+  script:
+  - yarn test
+
+test:node:latest:
+  image: node:latest
+  stage: test
+  script:
+  - yarn test
