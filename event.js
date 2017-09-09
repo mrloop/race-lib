@@ -32,7 +32,7 @@ module.exports = class Event {
   }
 
   load() {
-    return fs.readFileAsync(path.join(__dirname, 'fixtures', 'event_with_entrants.html')).then( file => file.toString());
+    return fs.readFileAsync(path.join(__dirname, 'tests', 'fixtures', 'event_with_entrants.html')).then( file => file.toString());
   }
 
   get() {
@@ -71,7 +71,7 @@ module.exports = class Event {
 
   static getUpcomming() {
     if(process.env.test) {
-      return fs.readFileAsync(path.join(__dirname, 'fixtures', 'events.html')).then( file => file.toString());
+      return fs.readFileAsync(path.join(__dirname, 'tests', 'fixtures', 'events.html')).then( file => file.toString());
     } else {
       return fetch('https://www.britishcycling.org.uk/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=21&resultsperpage=1000').then(res => res.text());
     }

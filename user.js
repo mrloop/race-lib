@@ -24,7 +24,7 @@ module.exports = class User{
   }
 
   loadPoints(){
-    return fs.readFileAsync(path.join(__dirname, 'fixtures', 'person.html')).then(file => {
+    return fs.readFileAsync(path.join(__dirname, 'tests', 'fixtures', 'person.html')).then(file => {
       return file.toString();
     })
   }
