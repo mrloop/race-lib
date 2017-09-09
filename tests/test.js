@@ -5,7 +5,7 @@ import test from 'ava';
 process.env.test = true;
 
 
-const { Event } = require('./index');
+const { Event } = require('../index');
 
 test('event', async t => {
   let myEvent = new Event('nonsense_id');
@@ -15,7 +15,7 @@ test('event', async t => {
 });
 
 
-const { User } = require('./index');
+const { User } = require('../index');
 
 test('user', async t => {
   let user = new User('1234');
