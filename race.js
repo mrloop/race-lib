@@ -24,7 +24,7 @@ module.exports = class Race {
   }
 
   loadEntrants() {
-    return fs.readFileAsync(path.join(__dirname, 'sample', 'entrants.html')).then( file => file.toString())
+    return fs.readFileAsync(path.join(__dirname, 'fixtures', 'entrants.html')).then( file => file.toString())
   }
 
   getEntrants(race_id) {
