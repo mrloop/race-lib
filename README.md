@@ -1,4 +1,4 @@
-[![pipeline status](https://gitlab.com/mrloop/race-lib/badges/master/pipeline.svg)](https://gitlab.com/mrloop/race-lib/commits/master)
+[![Build Status](https://travis-ci.org/mrloop/race-lib.svg)](https://travis-ci.org/mrloop/race-lib)
 
 # race-lib
 
@@ -12,4 +12,4 @@ Event.upcomming().then((events) => {
 });
 ```
 
-See [race-cli](https://gitlab.com/mrloop/race-cli) for more examples.
+See [race-cli](https://github.com/mrloop/race-cli) for more examples.
