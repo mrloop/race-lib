@@ -1,11 +1,10 @@
 'use strict';
 
 import test from 'ava';
+import { Event, User } from '../index';
 
 process.env.test = true;
 
-
-const { Event } = require('../index');
 
 test('event', async t => {
   let myEvent = new Event('nonsense_id');
@@ -13,9 +12,6 @@ test('event', async t => {
     t.is(evt.races.length, 1);
   });
 });
-
-
-const { User } = require('../index');
 
 test('user', async t => {
   let user = new User('1234');
