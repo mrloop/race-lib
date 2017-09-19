@@ -2,7 +2,7 @@
   "name": "race-lib",
   "version": "0.0.2",
   "description": "retrieve event data from britishcycling.org",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/mrloop/race-lib",
   "author": "mrloop <ewan@mrloop.com>",
   "license": "MIT",

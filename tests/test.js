@@ -1,7 +1,7 @@
 'use strict';
 
 import test from 'ava';
-import { Event, User } from '../index';
+import { Event, User } from '../src/index';
 
 process.env.test = true;
 

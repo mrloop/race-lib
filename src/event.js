@@ -32,7 +32,7 @@ module.exports = class Event {
   }
 
   load() {
-    return fs.readFileAsync(path.join(__dirname, 'tests', 'fixtures', 'event_with_entrants.html')).then( file => file.toString());
+    return fs.readFileAsync(path.join(__dirname, '..','tests', 'fixtures', 'event_with_entrants.html')).then( file => file.toString());
   }
 
   get() {
