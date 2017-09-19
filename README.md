@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/mrloop/race-lib.svg)](https://travis-ci.org/mrloop/race-lib)
 
-# race-lib
+# ⚙ race-lib
 
 Retrieve event data from [britishcycling.org](https://www.britishcycling.org.uk/events/results?keywords=&show=all)
 
