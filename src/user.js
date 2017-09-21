@@ -46,6 +46,9 @@ export default class User{
       $('dd').each( (i, el) => {
         this.parseDd($(el).text());
       });
+      if($('main h1').text().split(':')[1]) {
+        this.name = $('main h1').text().split(':')[1].trim();
+      }
       return this;
     });
   }
