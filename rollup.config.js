@@ -9,14 +9,15 @@ export default [
 	// browser-friendly UMD build
 	{
 		input: 'src/index.js',
+    external: ['node-fetch'],
     output: {
       file: pkg.browser,
       format: 'umd',
       name: 'race-lib',
     },
-		plugins: [
-			resolve(), // so Rollup can find `ms`
-			commonjs(), // so Rollup can convert `ms` to an ES module
+    plugins: [
+      resolve({preferBuiltins: false}),
+      commonjs(),
       json(),
       html({
         include: 'tests/fixtures/*.html'
@@ -34,7 +35,7 @@ export default [
 	// the `targets` option which can specify `dest` and `format`)
 	{
 		input: 'src/index.js',
-		external: ['isomorphic-fetch', 'cheerio-or-jquery', 'urijs', 'es6-promise'],
+		external: ['isomorphic-fetch', 'cheerio-or-jquery', 'uri-js', 'es6-promise'],
 		output: [
 			{ file: pkg.main, format: 'cjs' },
 			{ file: pkg.module, format: 'es' }

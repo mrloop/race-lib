@@ -1,7 +1,8 @@
-import URI from 'urijs';
+//import URI from 'urijs';
 import fetch from 'isomorphic-fetch';
 import cheerio from 'cheerio-or-jquery';
 import Promise from 'es6-promise';
+import { parse } from 'uri-js';
 
 import person_html from '../tests/fixtures/person.html';
 
@@ -9,11 +10,17 @@ const DEFAULT_NUM = 999;
 
 export default class User{
   constructor(href){
-    this.id = new URI(href).search(true).person_id;
+    this.id = this.idFromUrl(href);//3; //new URI(href).search(true).person_id;
     this.points_href = href;
     this.pointsPromise = this.initPoints();
     this.regional_rank = DEFAULT_NUM;
     this.national_rank = DEFAULT_NUM;
+  }
+
+  idFromUrl(url){
+    return parse(url).query.split('&').find( kv => {
+      return kv.split('=')[0] === 'person_id';
+    }).split('=')[1];
   }
 
   fetchPoints(){
@@ -39,7 +46,6 @@ export default class User{
       $('dd').each( (i, el) => {
         this.parseDd($(el).text());
       });
-      this.name = $('main h1').text().split(':')[1].trim();
       return this;
     });
   }

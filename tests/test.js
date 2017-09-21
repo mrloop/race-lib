@@ -11,7 +11,7 @@ test('event', async t => {
 });
 
 test('user', async t => {
-  let user = new User('1234');
+  let user = new User('https://batman.org/?goats_cheese=false&person_id=1234');
   await user.initPoints().then((user) => {
     t.is(user.current_club, "Leslie Bike Shop/Bikers Boutique");
   });

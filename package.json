@@ -18,7 +18,7 @@
     "cheerio-or-jquery": "^1.3.0",
     "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^2.2.1",
-    "urijs": "^1.18.12"
+    "uri-js": "^3.0.2"
   },
   "devDependencies": {
     "ava": "^0.22.0",
