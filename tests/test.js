@@ -1,10 +1,7 @@
-'use strict';
-
 import test from 'ava';
-import { Event, User } from '../src/index';
+import { Event, User } from '../dist/race-lib.cjs';
 
 process.env.test = true;
-
 
 test('event', async t => {
   let myEvent = new Event('nonsense_id');

@@ -1,16 +1,13 @@
-'use strict';
+import Race from './race';
 
-const Race = require('./race');
+import fetch from 'isomorphic-fetch';
+import cheerio from 'cheerio-or-jquery';
+import Promise from 'es6-promise';
 
-const URI = require('urijs');
-const fetch = require('node-fetch');
-const cheerio = require('cheerio');
-const Promise = require('bluebird')
-const fs = Promise.promisifyAll(require('fs'));
-const path = require('path');
+import event_with_entrants_html from '../tests/fixtures/event_with_entrants.html';
+import events_html from '../tests/fixtures/events.html';
 
-
-module.exports = class Event {
+export default class Event {
   constructor(id, name) {
     this.id = id;
     this.races = [];
@@ -32,7 +29,7 @@ module.exports = class Event {
   }
 
   load() {
-    return fs.readFileAsync(path.join(__dirname, '..','tests', 'fixtures', 'event_with_entrants.html')).then( file => file.toString());
+    return Promise.resolve(event_with_entrants_html);
   }
 
   get() {
@@ -71,7 +68,7 @@ module.exports = class Event {
 
   static getUpcomming() {
     if(process.env.test) {
-      return fs.readFileAsync(path.join(__dirname, 'tests', 'fixtures', 'events.html')).then( file => file.toString());
+      return Promise.resolve(events_html);
     } else {
       return fetch('https://www.britishcycling.org.uk/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=21&resultsperpage=1000').then(res => res.text());
     }

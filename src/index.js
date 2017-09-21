@@ -1,5 +1,5 @@
-'use strict';
+import Event from './event';
+import Race from './race';
+import User from './user';
 
-module.exports.Event = require('./event');
-module.exports.Race = require('./race');
-module.exports.User = require('./user');
+export { Event, Race, User }

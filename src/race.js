@@ -1,14 +1,12 @@
-'use strict';
+import User from './user';
 
-const User = require('./user');
+import fetch from 'isomorphic-fetch';
+import cheerio from 'cheerio-or-jquery';
+import Promise from 'es6-promise';
 
-const fetch = require('node-fetch');
-const cheerio = require('cheerio');
-const Promise = require('bluebird')
-const fs = Promise.promisifyAll(require('fs'));
-const path = require('path');
+import entrants_html from '../tests/fixtures/entrants.html';
 
-module.exports = class Race {
+export default class Race {
   constructor(id, name) {
     this.name = name;
     this.id = id;
@@ -24,7 +22,7 @@ module.exports = class Race {
   }
 
   loadEntrants() {
-    return fs.readFileAsync(path.join(__dirname, '..', 'tests', 'fixtures', 'entrants.html')).then( file => file.toString())
+    return Promise.resolve(entrants_html);
   }
 
   getEntrants(race_id) {

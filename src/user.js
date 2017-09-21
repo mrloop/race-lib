@@ -1,15 +1,13 @@
-'use strict';
+import URI from 'urijs';
+import fetch from 'isomorphic-fetch';
+import cheerio from 'cheerio-or-jquery';
+import Promise from 'es6-promise';
 
-const URI = require('urijs');
-const fetch = require('node-fetch');
-const cheerio = require('cheerio');
-const Promise = require('bluebird')
-const fs = Promise.promisifyAll(require('fs'));
-const path = require('path');
+import person_html from '../tests/fixtures/person.html';
 
 const DEFAULT_NUM = 999;
 
-module.exports = class User{
+export default class User{
   constructor(href){
     this.id = new URI(href).search(true).person_id;
     this.points_href = href;
@@ -24,9 +22,7 @@ module.exports = class User{
   }
 
   loadPoints(){
-    return fs.readFileAsync(path.join(__dirname, '..', 'tests', 'fixtures', 'person.html')).then(file => {
-      return file.toString();
-    })
+    return Promise.resolve(person_html);
   }
 
   getPoints(){
