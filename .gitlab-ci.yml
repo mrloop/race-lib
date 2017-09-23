@@ -10,12 +10,6 @@ before_script:
 stages:
   - test
 
-test:node:4:
-  image: node:4
-  stage: test
-  script:
-  - yarn test
-
 test:node:6:
   image: node:6
   stage: test
