@@ -2,14 +2,12 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import html from 'rollup-plugin-html';
-import json from 'rollup-plugin-json';
 import pkg from './package.json';
 
 export default [
 	// browser-friendly UMD build
 	{
 		input: 'src/index.js',
-    external: ['node-fetch'],
     output: {
       file: pkg.browser,
       format: 'umd',
@@ -18,12 +16,11 @@ export default [
     plugins: [
       resolve({preferBuiltins: false}),
       commonjs(),
-      json(),
       html({
         include: 'tests/fixtures/*.html'
       }),
       babel({
-        exclude: ['node_modules/**']
+        exclude: ['node_modules/**', 'tests/fixtures/**']
       })
 		]
 	},
@@ -35,7 +32,7 @@ export default [
 	// the `targets` option which can specify `dest` and `format`)
 	{
 		input: 'src/index.js',
-		external: ['isomorphic-fetch', 'cheerio-or-jquery', 'uri-js', 'es6-promise'],
+		external: ['uri-js', 'es6-promise'],
 		output: [
 			{ file: pkg.main, format: 'cjs' },
 			{ file: pkg.module, format: 'es' }
@@ -45,7 +42,7 @@ export default [
         include: 'tests/fixtures/*.html'
       }),
       babel({
-        exclude: ['node_modules/**']
+        exclude: ['node_modules/**', 'tests/fixtures/**']
       })
     ]
 	}

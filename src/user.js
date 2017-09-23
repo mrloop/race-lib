@@ -1,6 +1,4 @@
 //import URI from 'urijs';
-import fetch from 'isomorphic-fetch';
-import cheerio from 'cheerio-or-jquery';
 import Promise from 'es6-promise';
 import { parse } from 'uri-js';
 
@@ -24,7 +22,7 @@ export default class User{
   }
 
   fetchPoints(){
-    return fetch(`https://www.britishcycling.org.uk/${this.points_href}`)
+    return User._injected_fetch(`https://www.britishcycling.org.uk/${this.points_href}`)
       .then(res => res.text());
   }
 
@@ -33,7 +31,7 @@ export default class User{
   }
 
   getPoints(){
-    if(process.env.test){
+    if(typeof process !== "undefined" && process.env.test) {
       return this.loadPoints();
     } else {
       return this.fetchPoints();
@@ -42,7 +40,7 @@ export default class User{
 
   initPoints(){
     return this.getPoints().then(body => {
-      const $ = cheerio.load(body);
+      const $ = User._injected_cheerio.load(body);
       $('dd').each( (i, el) => {
         this.parseDd($(el).text());
       });
@@ -95,5 +93,10 @@ export default class User{
 
   static sort(users){
     return users.sort(this.compareFnc);
+  }
+
+  static inject(attr, obj) {
+    let privateVarName = `_injected_${attr}`;
+    this[privateVarName] = obj;
   }
 }

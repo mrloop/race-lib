@@ -1,7 +1,5 @@
 import Race from './race';
 
-import fetch from 'isomorphic-fetch';
-import cheerio from 'cheerio-or-jquery';
 import Promise from 'es6-promise';
 
 import event_with_entrants_html from '../tests/fixtures/event_with_entrants.html';
@@ -24,7 +22,7 @@ export default class Event {
   }
 
   fetch() {
-    return fetch(`https://www.britishcycling.org.uk/events/details/${this.id}`)
+    return Event._injected_fetch(`https://www.britishcycling.org.uk/events/details/${this.id}`)
       .then(res => res.text());
   }
 
@@ -33,7 +31,7 @@ export default class Event {
   }
 
   get() {
-    if(process.env.test) {
+    if(typeof process !== "undefined" && process.env.test) {
       return this.load();
     } else {
       return this.fetch();
@@ -41,7 +39,7 @@ export default class Event {
   }
 
   process(html) {
-    let $ = cheerio.load(html);
+    let $ = Event._injected_cheerio.load(html);
     this.name = $('.article--event h1').text()
     this.races = $("table:has('.table__th--title')").first().find('.table__th--title').map((i, el) => {
       let raceName = this.cleanStr($(el).text());
@@ -52,6 +50,12 @@ export default class Event {
 
   cleanStr(str) {
     return str.replace(/\s+/g, ' ').trim();
+  }
+
+  static inject(attr, obj) {
+    let privateVarName = `_injected_${attr}`;
+    this[privateVarName] = obj;
+    Race.inject(attr, obj);
   }
 
   static cachePromise(fnc){
@@ -67,16 +71,17 @@ export default class Event {
   }
 
   static getUpcomming() {
-    if(process.env.test) {
+    debugger
+    if(typeof process !== "undefined" && process.env.test) {
       return Promise.resolve(events_html);
     } else {
-      return fetch('https://www.britishcycling.org.uk/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=21&resultsperpage=1000').then(res => res.text());
+      return Event._injected_fetch('https://www.britishcycling.org.uk/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=21&resultsperpage=1000').then(res => res.text());
     }
   }
 
   static _upcomming() {
     return this.getUpcomming(true).then((html) => {
-      let $ = cheerio.load(html);
+      let $ = Event._injected_cheerio.load(html);
       return $('.article--events__table .events--desktop__row .table__more-label a').map(function(i, node) {
         return new Event($(node).attr('data-event-id'), $(node).text());
       }).toArray();

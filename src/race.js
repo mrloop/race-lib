@@ -1,7 +1,5 @@
 import User from './user';
 
-import fetch from 'isomorphic-fetch';
-import cheerio from 'cheerio-or-jquery';
 import Promise from 'es6-promise';
 
 import entrants_html from '../tests/fixtures/entrants.html';
@@ -17,7 +15,7 @@ export default class Race {
   }
 
   fetchEntrants() {
-    return fetch(`https://www.britishcycling.org.uk/events_version_2/ajax_race_entrants_dialog?race_id=${this.id}`)
+    return Race._injected_fetch(`https://www.britishcycling.org.uk/events_version_2/ajax_race_entrants_dialog?race_id=${this.id}`)
       .then(res => res.text())
   }
 
@@ -26,7 +24,7 @@ export default class Race {
   }
 
   getEntrants(race_id) {
-    if(process.env.test) {
+    if(typeof process !== "undefined" && process.env.test) {
       return this.loadEntrants();
     } else {
       return this.fetchEntrants(race_id);
@@ -34,7 +32,7 @@ export default class Race {
   }
 
   processEntrants(html) {
-    let $ = cheerio.load(html);
+    let $ = Race._injected_cheerio.load(html);
     return $("table[summary='List of entrants in this race'] tbody tr").map((i, el)=> {
       return $(el).find('a').first().attr('href');
     }).filter((el) => { return !!el }).map((i, href) => {
@@ -62,5 +60,11 @@ export default class Race {
         return this._users = User.sort(this._users);
       });
     })
+  }
+
+  static inject(attr, obj) {
+    let privateVarName = `_injected_${attr}`;
+    this[privateVarName] = obj;
+    User.inject(attr, obj);
   }
 }

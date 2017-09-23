@@ -1,5 +1,12 @@
 import test from 'ava';
 import { Event, User } from '../dist/race-lib.cjs';
+import cheerio from 'cheerio';
+import fetch from 'node-fetch';
+
+Event.inject('fetch', fetch);
+Event.inject('cheerio', cheerio);
+User.inject('fetch', fetch);
+User.inject('cheerio', cheerio);
 
 process.env.test = true;
 
