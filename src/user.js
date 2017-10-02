@@ -2,8 +2,6 @@
 import Promise from 'es6-promise';
 import { parse } from 'uri-js';
 
-import person_html from '../tests/fixtures/person.html';
-
 const DEFAULT_NUM = 999;
 
 export default class User{
@@ -26,13 +24,9 @@ export default class User{
       .then(res => res.text());
   }
 
-  loadPoints(){
-    return Promise.resolve(person_html);
-  }
-
   getPoints(){
-    if(typeof process !== "undefined" && process.env.test) {
-      return this.loadPoints();
+    if(User._injected_person_html) {
+      return Promise.resolve(User._injected_person_html);
     } else {
       return this.fetchPoints();
     }

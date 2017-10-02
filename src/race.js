@@ -2,8 +2,6 @@ import User from './user';
 
 import Promise from 'es6-promise';
 
-import entrants_html from '../tests/fixtures/entrants.html';
-
 export default class Race {
   constructor(id, name) {
     this.name = name;
@@ -19,13 +17,9 @@ export default class Race {
       .then(res => res.text())
   }
 
-  loadEntrants() {
-    return Promise.resolve(entrants_html);
-  }
-
   getEntrants(race_id) {
-    if(typeof process !== "undefined" && process.env.test) {
-      return this.loadEntrants();
+    if(Race._injected_entrants_html) {
+      return Promise.resolve(Race._injected_entrants_html);
     } else {
       return this.fetchEntrants(race_id);
     }

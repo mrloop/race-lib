@@ -2,13 +2,11 @@ import Race from './race';
 
 import Promise from 'es6-promise';
 
-import event_with_entrants_html from '../tests/fixtures/event_with_entrants.html';
-import events_html from '../tests/fixtures/events.html';
-
 export default class Event {
   constructor(id, name) {
     this.id = id;
     this.races = [];
+    this.error = null;
     if(name) {
       this.name = this.cleanStr(name);
     }
@@ -26,13 +24,9 @@ export default class Event {
       .then(res => res.text());
   }
 
-  load() {
-    return Promise.resolve(event_with_entrants_html);
-  }
-
   get() {
-    if(typeof process !== "undefined" && process.env.test) {
-      return this.load();
+    if(Event._injected_event_with_entrants_html) {
+      return Promise.resolve(Event._injected_event_with_entrants_html);
     } else {
       return this.fetch();
     }
@@ -72,8 +66,8 @@ export default class Event {
 
   static getUpcomming() {
     debugger
-    if(typeof process !== "undefined" && process.env.test) {
-      return Promise.resolve(events_html);
+    if(Event._injected_events_html) {
+      return Promise.resolve(Event._injected_events_html);
     } else {
       return Event._injected_fetch('https://www.britishcycling.org.uk/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=21&resultsperpage=1000').then(res => res.text());
     }
