@@ -6,6 +6,11 @@ Retrieve event data from [britishcycling.org](https://www.britishcycling.org.uk/
 
 ```js
 import { Event } from 'race-lib';
+import cheerio from 'cheerio';
+import fetch from 'node-fetch';
+
+Event.inject('fetch', fetch);
+Event.inject('cheerio', cheerio);
 
 Event.upcomming().then((events) => {
   events.forEach( evt => console.log(evt.name));
