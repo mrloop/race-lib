@@ -1,6 +1,6 @@
 {
   "name": "race-lib",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "retrieve event data from britishcycling.org",
   "main": "dist/race-lib.cjs.js",
   "module": "dist/race-lib.esm.js",
@@ -26,7 +26,7 @@
     "babel-preset-es2015-rollup": "^3.0.0",
     "cheerio": "^1.0.0-rc.2",
     "node-fetch": "^1.7.3",
-    "race-fix": "^0.0.1",
+    "race-fix": "^0.0.2",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.1",
