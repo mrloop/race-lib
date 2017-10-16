@@ -2497,7 +2497,7 @@ var User = function () {
     value: function inject(attr, obj) {
       var privateVarName = '_injected_' + attr;
       if (attr === 'fetch') {
-        obj = serialFetch(delayFetch(obj, 2000));
+        obj = serialFetch(delayFetch(obj, 4000));
       }
       this[privateVarName] = obj;
     }

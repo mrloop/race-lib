@@ -103,7 +103,7 @@ export default class User{
   static inject(attr, obj) {
     let privateVarName = `_injected_${attr}`;
     if(attr === 'fetch') {
-      obj = serialFetch(delayFetch(obj, 2000));
+      obj = serialFetch(delayFetch(obj, 4000));
     }
     this[privateVarName] = obj;
 
