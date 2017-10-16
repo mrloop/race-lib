@@ -2,9 +2,11 @@ import User from './user';
 
 import Promise from 'es6-promise';
 import AbortController from 'abort-controller';
+import { EventTarget, defineEventAttribute } from 'event-target-shim';
 
-export default class Race {
+export default class Race extends EventTarget {
   constructor(id, name) {
+    super();
     this.name = name;
     this.id = id;
   }
@@ -57,6 +59,7 @@ export default class Race {
     const signal = abortController.signal;
 
     this._allPromise = this.initEntrants(signal).then((entrants) => {
+      this.setupNotifications(entrants);
       //want point promises to settle
       return Promise.all(entrants.map((entrant) => {
         return entrant.pointsPromise;
@@ -70,9 +73,24 @@ export default class Race {
     return this._allPromise;
   }
 
+  setupNotifications(entrants) {
+    let count = 0;
+
+    this.dispatchEvent({type: 'entrantLoaded', detail: { loaded: count, total: entrants.length }});
+
+    entrants.forEach( entrant => {
+      entrant.pointsPromise.then( () => {
+        count = count + 1;
+        this.dispatchEvent({type: 'entrantLoaded', detail: { loaded: count, total: entrants.length }});
+      }).catch(err => {});
+    });
+  }
+
   static inject(attr, obj) {
     let privateVarName = `_injected_${attr}`;
     this[privateVarName] = obj;
     User.inject(attr, obj);
   }
 }
+
+defineEventAttribute(Race.prototype, "entrantLoaded")

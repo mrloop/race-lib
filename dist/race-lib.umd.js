@@ -2188,15 +2188,15 @@ function delayFetch(originalFetch, delay) {
 
   return function fetch(input, init) {
     return new Promise(function (resolve, reject) {
-      setTimeout(function () {
-        //bit of work around for delayed serialized requests and abort.
-        //manually check in signal.abort has been called as fetch wouldn't have existed when first called
-        if (init.signal && init.signal.aborted) {
-          reject({ name: 'AbortError' });
-        } else {
+      if (init.signal && init.signal.aborted) {
+        reject({ name: 'AbortError' });
+      } else {
+        setTimeout(function () {
+          //bit of work around for delayed serialized requests and abort.
+          //manually check in signal.abort has been called as fetch wouldn't have existed when first called
           originalFetch(input, init).then(resolve).catch(reject);
-        }
-      }, delay);
+        }, delay);
+      }
     });
   };
 }
@@ -2341,6 +2341,48 @@ var createClass = function () {
     return Constructor;
   };
 }();
+
+
+
+
+
+
+
+
+
+var inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
+
+
+
+
+
+
+
+
+
+
+
+var possibleConstructorReturn = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && (typeof call === "object" || typeof call === "function") ? call : self;
+};
 
 //import URI from 'urijs';
 var DEFAULT_NUM = 999;
@@ -3223,6 +3265,8 @@ module.exports.defineEventAttribute = defineEventAttribute;
 });
 
 unwrapExports(eventTargetShim);
+var eventTargetShim_1 = eventTargetShim.defineEventAttribute;
+var eventTargetShim_2 = eventTargetShim.EventTarget;
 
 var abortController = createCommonjsModule(function (module, exports) {
 /**
@@ -3372,12 +3416,17 @@ module.exports.AbortSignal = AbortSignal;
 
 var AbortController = unwrapExports(abortController);
 
-var Race = function () {
+var Race = function (_EventTarget) {
+  inherits(Race, _EventTarget);
+
   function Race(id, name) {
     classCallCheck(this, Race);
 
-    this.name = name;
-    this.id = id;
+    var _this = possibleConstructorReturn(this, (Race.__proto__ || Object.getPrototypeOf(Race)).call(this));
+
+    _this.name = name;
+    _this.id = id;
+    return _this;
   }
 
   createClass(Race, [{
@@ -3417,18 +3466,18 @@ var Race = function () {
   }, {
     key: 'initEntrants',
     value: function initEntrants(signal) {
-      var _this = this;
+      var _this2 = this;
 
       return this.getEntrants(this.id).then(function (html) {
-        return _this.processEntrants(html, signal);
+        return _this2.processEntrants(html, signal);
       }).then(function (users) {
-        return _this._users = users.toArray();
+        return _this2._users = users.toArray();
       });
     }
   }, {
     key: 'entrants',
     value: function entrants() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this._users) {
         return es6Promise.resolve(this._users);
@@ -3442,17 +3491,34 @@ var Race = function () {
       var signal = abortController$$1.signal;
 
       this._allPromise = this.initEntrants(signal).then(function (entrants) {
+        _this3.setupNotifications(entrants);
         //want point promises to settle
         return es6Promise.all(entrants.map(function (entrant) {
           return entrant.pointsPromise;
         })).then(function () {
-          return _this2._users = User.sort(_this2._users);
+          return _this3._users = User.sort(_this3._users);
         }).catch(function (err) {
           abortController$$1.abort(); //cancels all other fetches
-          throw { message: err, users: _this2._users };
+          throw { message: err, users: _this3._users };
         });
       });
       return this._allPromise;
+    }
+  }, {
+    key: 'setupNotifications',
+    value: function setupNotifications(entrants) {
+      var _this4 = this;
+
+      var count = 0;
+
+      this.dispatchEvent({ type: 'entrantLoaded', detail: { loaded: count, total: entrants.length } });
+
+      entrants.forEach(function (entrant) {
+        entrant.pointsPromise.then(function () {
+          count = count + 1;
+          _this4.dispatchEvent({ type: 'entrantLoaded', detail: { loaded: count, total: entrants.length } });
+        }).catch(function (err) {});
+      });
     }
   }], [{
     key: 'inject',
@@ -3463,7 +3529,9 @@ var Race = function () {
     }
   }]);
   return Race;
-}();
+}(eventTargetShim_2);
+
+eventTargetShim_1(Race.prototype, "entrantLoaded");
 
 var Event = function () {
   function Event(id, name) {
