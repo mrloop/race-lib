@@ -1,6 +1,7 @@
 import User from './user';
 
 import Promise from 'es6-promise';
+import AbortController from 'abort-controller';
 
 export default class Race {
   constructor(id, name) {
@@ -25,18 +26,19 @@ export default class Race {
     }
   }
 
-  processEntrants(html) {
+  processEntrants(html, signal) {
     let $ = Race._injected_cheerio.load(html);
     return $("table[summary='List of entrants in this race'] tbody tr").map((i, el)=> {
-      return $(el).find('a').first().attr('href');
-    }).filter((el) => { return !!el }).map((i, href) => {
-      return new User(href);
+      let link = $(el).find('a').first();
+      return {href: link.attr('href'), name: link.text().trim()};
+    }).filter((i, el) => { return !!el.href }).map((i, details) => {
+      return new User(details.href, details.name, signal);
     });
   }
 
-  initEntrants() {
+  initEntrants(signal) {
     return this.getEntrants(this.id).then((html) => {
-      return this.processEntrants(html);
+      return this.processEntrants(html, signal);
     }).then((users) => {
       return this._users = users.toArray();
     });
@@ -46,14 +48,26 @@ export default class Race {
     if(this._users) {
       return Promise.resolve(this._users);
     }
-    return this.initEntrants().then((entrants) => {
+
+    if(this._allPromise) {
+      return this._allPromise;
+    }
+
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
+    this._allPromise = this.initEntrants(signal).then((entrants) => {
       //want point promises to settle
       return Promise.all(entrants.map((entrant) => {
         return entrant.pointsPromise;
       })).then(() => {
         return this._users = User.sort(this._users);
+      }).catch((err) => {
+        abortController.abort(); //cancels all other fetches
+        throw {message: err, users: this._users};
       });
     })
+    return this._allPromise;
   }
 
   static inject(attr, obj) {

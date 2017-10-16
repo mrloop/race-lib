@@ -52,6 +52,12 @@ abbrev@1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"
 
+abort-controller@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/abort-controller/-/abort-controller-1.0.0.tgz#ba3d7ca265114d3c0efe74a32a06228bd1c31ea3"
+  dependencies:
+    event-target-shim "^3.0.0"
+
 acorn@^5.1.1:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.1.2.tgz#911cb53e036807cf0fa778dc5d370fbd864246d7"
@@ -1372,6 +1378,10 @@ estree-walker@^0.5.0:
 esutils@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.2.tgz#0abf4f1caa5bcb1f7a9d8acc6dea4faaa04bac9b"
+
+event-target-shim@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/event-target-shim/-/event-target-shim-3.0.0.tgz#d2faa31db7d97188463b2cbde5e09601acae4672"
 
 execa@^0.7.0:
   version "0.7.0"
@@ -2865,6 +2875,10 @@ semver-diff@^2.0.0:
 "semver@2 || 3 || 4 || 5", semver@^5.0.3, semver@^5.1.0, semver@^5.3.0:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
+
+serial-fetch@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/serial-fetch/-/serial-fetch-1.0.0.tgz#07fd2a1356bc53dfaca1e9005560b55f569160a6"
 
 set-blocking@~2.0.0:
   version "2.0.0"

@@ -10,7 +10,9 @@ function commonjsRequire () {
 	throw new Error('Dynamic requires are not currently supported by rollup-plugin-commonjs');
 }
 
-
+function unwrapExports (x) {
+	return x && x.__esModule ? x['default'] : x;
+}
 
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -2138,6 +2140,67 @@ SCHEMES["mailto"] = mailto;
 SCHEMES["urn"] = urn;
 SCHEMES["urn:uuid"] = uuid;
 
+var dist = createCommonjsModule(function (module, exports) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function serialFetch(originalFetch) {
+    var pending = [];
+    var running = 0;
+    function onComplete() {
+        running -= 1;
+        shift();
+    }
+    function onSuccess(response) {
+        onComplete();
+        return response;
+    }
+    function onError(reason) {
+        onComplete();
+        throw reason;
+    }
+    function shift() {
+        var request = pending.shift();
+        if (!request)
+            return;
+        request();
+    }
+    return function fetch(input, init) {
+        var pendingRequest = new Promise(function (resolve) {
+            running += 1;
+            pending.push(function () { return resolve([input, init]); });
+        })
+            .then(function (_a) {
+            var info = _a[0], init = _a[1];
+            return originalFetch(info, init).then(onSuccess, onError);
+        });
+        if (running === 1)
+            shift();
+        return pendingRequest;
+    };
+}
+
+exports.default = serialFetch;
+});
+
+var serialFetch = unwrapExports(dist);
+
+function delayFetch(originalFetch, delay) {
+
+  return function fetch(input, init) {
+    return new Promise(function (resolve, reject) {
+      setTimeout(function () {
+        //bit of work around for delayed serialized requests and abort.
+        //manually check in signal.abort has been called as fetch wouldn't have existed when first called
+        if (init.signal && init.signal.aborted) {
+          reject({ name: 'AbortError' });
+        } else {
+          originalFetch(input, init).then(resolve).catch(reject);
+        }
+      }, delay);
+    });
+  };
+}
+
 var asyncGenerator = function () {
   function AwaitValue(value) {
     this.value = value;
@@ -2283,10 +2346,12 @@ var createClass = function () {
 var DEFAULT_NUM = 999;
 
 var User = function () {
-  function User(href) {
+  function User(href, name, signal) {
     classCallCheck(this, User);
 
     this.id = this.idFromUrl(href); //3; //new URI(href).search(true).person_id;
+    this.name = name;
+    this.signal = signal;
     this.points_href = href;
     this.pointsPromise = this.initPoints();
     this.regional_rank = DEFAULT_NUM;
@@ -2303,7 +2368,13 @@ var User = function () {
   }, {
     key: 'fetchPoints',
     value: function fetchPoints() {
-      return User._injected_fetch('https://www.britishcycling.org.uk/' + this.points_href).then(function (res) {
+      var _this = this;
+
+      return User._injected_fetch('https://www.britishcycling.org.uk/' + this.points_href, { signal: this.signal }).then(function (res) {
+        if (res.status >= 400) {
+          _this.error = res.statusText;
+          throw res.statusText;
+        }
         return res.text();
       });
     }
@@ -2319,17 +2390,17 @@ var User = function () {
   }, {
     key: 'initPoints',
     value: function initPoints() {
-      var _this = this;
+      var _this2 = this;
 
       return this.getPoints().then(function (body) {
         var $ = User._injected_cheerio.load(body);
         $('dd').each(function (i, el) {
-          _this.parseDd($(el).text());
+          _this2.parseDd($(el).text());
         });
         if ($('main h1').text().split(':')[1]) {
-          _this.name = $('main h1').text().split(':')[1].trim();
+          _this2.name = $('main h1').text().split(':')[1].trim();
         }
-        return _this;
+        return _this2;
       });
     }
   }, {
@@ -2383,11 +2454,923 @@ var User = function () {
     key: 'inject',
     value: function inject(attr, obj) {
       var privateVarName = '_injected_' + attr;
+      if (attr === 'fetch') {
+        obj = serialFetch(delayFetch(obj, 2000));
+      }
       this[privateVarName] = obj;
     }
   }]);
   return User;
 }();
+
+var eventTargetShim = createCommonjsModule(function (module, exports) {
+/**
+ * @author Toru Nagashima <https://github.com/mysticatea>
+ * @copyright 2015 Toru Nagashima. All rights reserved.
+ * See LICENSE file in root directory for full license.
+ */
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+/**
+ * @typedef {object} PrivateData
+ * @property {EventTarget} eventTarget The event target.
+ * @property {{type:string}} event The original event object.
+ * @property {number} eventPhase The current event phase.
+ * @property {EventTarget|null} currentTarget The current event target.
+ * @property {boolean} canceled The flag to prevent default.
+ * @property {boolean} stopped The flag to stop propagation immediately.
+ * @property {Function|null} passiveListener The listener if the current listener is passive. Otherwise this is null.
+ * @property {number} timeStamp The unix time.
+ * @private
+ */
+
+/**
+ * Private data for event wrappers.
+ * @type {WeakMap<Event, PrivateData>}
+ * @private
+ */
+const privateData = new WeakMap();
+
+/**
+ * Cache for wrapper classes.
+ * @type {WeakMap<Object, Function>}
+ * @private
+ */
+const wrappers = new WeakMap();
+
+/**
+ * Get private data.
+ * @param {Event} event The event object to get private data.
+ * @returns {PrivateData} The private data of the event.
+ * @private
+ */
+function pd(event) {
+    const retv = privateData.get(event);
+    console.assert(retv != null, "'this' is expected an Event object, but got", event);
+    return retv
+}
+
+/**
+ * @see https://dom.spec.whatwg.org/#interface-event
+ * @private
+ */
+/**
+ * The event wrapper.
+ * @constructor
+ * @param {EventTarget} eventTarget The event target of this dispatching.
+ * @param {Event|{type:string}} event The original event to wrap.
+ */
+function Event(eventTarget, event) {
+    privateData.set(this, {
+        eventTarget,
+        event,
+        eventPhase: 2,
+        currentTarget: eventTarget,
+        canceled: false,
+        stopped: false,
+        passiveListener: null,
+        timeStamp: event.timeStamp || Date.now(),
+    });
+
+    // https://heycam.github.io/webidl/#Unforgeable
+    Object.defineProperty(this, "isTrusted", { value: false, enumerable: true });
+
+    // Define accessors
+    const keys = Object.keys(event);
+    for (let i = 0; i < keys.length; ++i) {
+        const key = keys[i];
+        if (!(key in this)) {
+            Object.defineProperty(this, key, defineRedirectDescriptor(key));
+        }
+    }
+}
+
+// Should be enumerable, but class methods are not enumerable.
+Event.prototype = {
+    /**
+     * The type of this event.
+     * @type {string}
+     */
+    get type() {
+        return pd(this).event.type
+    },
+
+    /**
+     * The target of this event.
+     * @type {EventTarget}
+     */
+    get target() {
+        return pd(this).eventTarget
+    },
+
+    /**
+     * The target of this event.
+     * @type {EventTarget}
+     */
+    get currentTarget() {
+        return pd(this).currentTarget
+    },
+
+    /**
+     * @returns {EventTarget[]} The composed path of this event.
+     */
+    composedPath() {
+        const currentTarget = pd(this).currentTarget;
+        if (currentTarget == null) {
+            return []
+        }
+        return [currentTarget]
+    },
+
+    /**
+     * Constant of NONE.
+     * @type {number}
+     */
+    get NONE() {
+        return 0
+    },
+
+    /**
+     * Constant of CAPTURING_PHASE.
+     * @type {number}
+     */
+    get CAPTURING_PHASE() {
+        return 1
+    },
+
+    /**
+     * Constant of AT_TARGET.
+     * @type {number}
+     */
+    get AT_TARGET() {
+        return 2
+    },
+
+    /**
+     * Constant of BUBBLING_PHASE.
+     * @type {number}
+     */
+    get BUBBLING_PHASE() {
+        return 3
+    },
+
+    /**
+     * The target of this event.
+     * @type {number}
+     */
+    get eventPhase() {
+        return pd(this).eventPhase
+    },
+
+    /**
+     * Stop event bubbling.
+     * @returns {void}
+     */
+    stopPropagation() {
+        const data = pd(this);
+        if (typeof data.event.stopPropagation === "function") {
+            data.event.stopPropagation();
+        }
+    },
+
+    /**
+     * Stop event bubbling.
+     * @returns {void}
+     */
+    stopImmediatePropagation() {
+        const data = pd(this);
+
+        data.stopped = true;
+        if (typeof data.event.stopImmediatePropagation === "function") {
+            data.event.stopImmediatePropagation();
+        }
+    },
+
+    /**
+     * The flag to be bubbling.
+     * @type {boolean}
+     */
+    get bubbles() {
+        return Boolean(pd(this).event.bubbles)
+    },
+
+    /**
+     * The flag to be cancelable.
+     * @type {boolean}
+     */
+    get cancelable() {
+        return Boolean(pd(this).event.cancelable)
+    },
+
+    /**
+     * Cancel this event.
+     * @returns {void}
+     */
+    preventDefault() {
+        const data = pd(this);
+        if (data.passiveListener != null) {
+            console.warn("Event#preventDefault() was called from a passive listener:", data.passiveListener);
+            return
+        }
+        if (!data.event.cancelable) {
+            return
+        }
+
+        data.canceled = true;
+        if (typeof data.event.preventDefault === "function") {
+            data.event.preventDefault();
+        }
+    },
+
+    /**
+     * The flag to indicate cancellation state.
+     * @type {boolean}
+     */
+    get defaultPrevented() {
+        return pd(this).canceled
+    },
+
+    /**
+     * The flag to be composed.
+     * @type {boolean}
+     */
+    get composed() {
+        return Boolean(pd(this).event.composed)
+    },
+
+    /**
+     * The unix time of this event.
+     * @type {number}
+     */
+    get timeStamp() {
+        return pd(this).timeStamp
+    },
+};
+
+// `constructor` is not enumerable.
+Object.defineProperty(Event.prototype, "constructor", { value: Event, configurable: true, writable: true });
+
+// Ensure `event instanceof window.Event` is `true`.
+if (typeof window !== "undefined" && typeof window.Event !== "undefined") {
+    Object.setPrototypeOf(Event.prototype, window.Event.prototype);
+
+    // Make association for wrappers.
+    wrappers.set(window.Event.prototype, Event);
+}
+
+/**
+ * Get the property descriptor to redirect a given property.
+ * @param {string} key Property name to define property descriptor.
+ * @returns {PropertyDescriptor} The property descriptor to redirect the property.
+ * @private
+ */
+function defineRedirectDescriptor(key) {
+    return {
+        get() {
+            return pd(this).event[key]
+        },
+        set(value) {
+            pd(this).event[key] = value;
+        },
+        configurable: true,
+        enumerable: true,
+    }
+}
+
+/**
+ * Get the property descriptor to call a given method property.
+ * @param {string} key Property name to define property descriptor.
+ * @returns {PropertyDescriptor} The property descriptor to call the method property.
+ * @private
+ */
+function defineCallDescriptor(key) {
+    return {
+        value() {
+            const event = pd(this).event;
+            return event[key].apply(event, arguments)
+        },
+        configurable: true,
+        enumerable: true,
+    }
+}
+
+/**
+ * Define new wrapper class.
+ * @param {Function} BaseEvent The base wrapper class.
+ * @param {Object} proto The prototype of the original event.
+ * @returns {Function} The defined wrapper class.
+ * @private
+ */
+function defineWrapper(BaseEvent, proto) {
+    const keys = Object.keys(proto);
+    if (keys.length === 0) {
+        return BaseEvent
+    }
+
+    /** CustomEvent */
+    function CustomEvent(eventTarget, event) {
+        BaseEvent.call(this, eventTarget, event);
+    }
+
+    CustomEvent.prototype = Object.create(BaseEvent.prototype, {
+        constructor: { value: CustomEvent, configurable: true, writable: true },
+    });
+
+    // Define accessors.
+    for (let i = 0; i < keys.length; ++i) {
+        const key = keys[i];
+        if (!(key in BaseEvent.prototype)) {
+            const descriptor = Object.getOwnPropertyDescriptor(proto, key);
+            const isFunc = (typeof descriptor.value === "function");
+            Object.defineProperty(
+                CustomEvent.prototype,
+                key,
+                isFunc ? defineCallDescriptor(key) : defineRedirectDescriptor(key)
+            );
+        }
+    }
+
+    return CustomEvent
+}
+
+/**
+ * Get the wrapper class of a given prototype.
+ * @param {Object} proto The prototype of the original event to get its wrapper.
+ * @returns {Function} The wrapper class.
+ * @private
+ */
+function getWrapper(proto) {
+    if (proto == null || proto === Object.prototype) {
+        return Event
+    }
+
+    let wrapper = wrappers.get(proto);
+    if (wrapper == null) {
+        wrapper = defineWrapper(getWrapper(Object.getPrototypeOf(proto)), proto);
+        wrappers.set(proto, wrapper);
+    }
+    return wrapper
+}
+
+/**
+ * Wrap a given event to management a dispatching.
+ * @param {EventTarget} eventTarget The event target of this dispatching.
+ * @param {Object} event The event to wrap.
+ * @returns {Event} The wrapper instance.
+ * @private
+ */
+function wrapEvent(eventTarget, event) {
+    const Wrapper = getWrapper(Object.getPrototypeOf(event));
+    return new Wrapper(eventTarget, event)
+}
+
+/**
+ * Get the stopped flag of a given event.
+ * @param {Event} event The event to get.
+ * @returns {boolean} The flag to stop propagation immediately.
+ * @private
+ */
+function isStopped(event) {
+    return pd(event).stopped
+}
+
+/**
+ * Set the current event phase of a given event.
+ * @param {Event} event The event to set current target.
+ * @param {number} eventPhase New event phase.
+ * @returns {void}
+ * @private
+ */
+function setEventPhase(event, eventPhase) {
+    pd(event).eventPhase = eventPhase;
+}
+
+/**
+ * Set the current target of a given event.
+ * @param {Event} event The event to set current target.
+ * @param {EventTarget|null} currentTarget New current target.
+ * @returns {void}
+ * @private
+ */
+function setCurrentTarget(event, currentTarget) {
+    pd(event).currentTarget = currentTarget;
+}
+
+/**
+ * Set a passive listener of a given event.
+ * @param {Event} event The event to set current target.
+ * @param {Function|null} passiveListener New passive listener.
+ * @returns {void}
+ * @private
+ */
+function setPassiveListener(event, passiveListener) {
+    pd(event).passiveListener = passiveListener;
+}
+
+/**
+ * @typedef {object} ListenerNode
+ * @property {Function} listener
+ * @property {1|2|3} listenerType
+ * @property {boolean} passive
+ * @property {boolean} once
+ * @property {ListenerNode|null} next
+ * @private
+ */
+
+/**
+ * @type {WeakMap<object, Map<string, ListenerNode>>}
+ * @private
+ */
+const listenersMap = new WeakMap();
+
+// Listener types
+const CAPTURE = 1;
+const BUBBLE = 2;
+const ATTRIBUTE = 3;
+
+/**
+ * Check whether a given value is an object or not.
+ * @param {any} x The value to check.
+ * @returns {boolean} `true` if the value is an object.
+ */
+function isObject(x) {
+    return x !== null && typeof x === "object" //eslint-disable-line no-restricted-syntax
+}
+
+/**
+ * Get listeners.
+ * @param {EventTarget} eventTarget The event target to get.
+ * @returns {Map<string, ListenerNode>} The listeners.
+ * @private
+ */
+function getListeners(eventTarget) {
+    const listeners = listenersMap.get(eventTarget);
+    console.assert(listeners != null, "'this' is expected an EventTarget object, but got", eventTarget);
+    return listeners || new Map()
+}
+
+/**
+ * Get the property descriptor for the event attribute of a given event.
+ * @param {string} eventName The event name to get property descriptor.
+ * @returns {PropertyDescriptor} The property descriptor.
+ * @private
+ */
+function defineEventAttributeDescriptor(eventName) {
+    return {
+        get() {
+            const listeners = getListeners(this);
+            let node = listeners.get(eventName);
+            while (node != null) {
+                if (node.listenerType === ATTRIBUTE) {
+                    return node.listener
+                }
+                node = node.next;
+            }
+            return null
+        },
+
+        set(listener) {
+            if (typeof listener !== "function" && !isObject(listener)) {
+                listener = null; // eslint-disable-line no-param-reassign
+            }
+            const listeners = getListeners(this);
+
+            // Traverse to the tail while removing old value.
+            let prev = null;
+            let node = listeners.get(eventName);
+            while (node != null) {
+                if (node.listenerType === ATTRIBUTE) {
+                    // Remove old value.
+                    if (prev !== null) {
+                        prev.next = node.next;
+                    }
+                    else if (node.next !== null) {
+                        listeners.set(eventName, node.next);
+                    }
+                    else {
+                        listeners.delete(eventName);
+                    }
+                }
+                else {
+                    prev = node;
+                }
+
+                node = node.next;
+            }
+
+            // Add new value.
+            if (listener !== null) {
+                const newNode = {
+                    listener,
+                    listenerType: ATTRIBUTE,
+                    passive: false,
+                    once: false,
+                    next: null,
+                };
+                if (prev === null) {
+                    listeners.set(eventName, newNode);
+                }
+                else {
+                    prev.next = newNode;
+                }
+            }
+        },
+        configurable: true,
+        enumerable: true,
+    }
+}
+
+/**
+ * Define an event attribute (e.g. `eventTarget.onclick`).
+ * @param {Object} eventTargetPrototype The event target prototype to define an event attrbite.
+ * @param {string} eventName The event name to define.
+ * @returns {void}
+ */
+function defineEventAttribute(eventTargetPrototype, eventName) {
+    Object.defineProperty(eventTargetPrototype, `on${eventName}`, defineEventAttributeDescriptor(eventName));
+}
+
+/**
+ * Define a custom EventTarget with event attributes.
+ * @param {string[]} eventNames Event names for event attributes.
+ * @returns {EventTarget} The custom EventTarget.
+ * @private
+ */
+function defineCustomEventTarget(eventNames) {
+    /** CustomEventTarget */
+    function CustomEventTarget() {
+        EventTarget.call(this);
+    }
+
+    CustomEventTarget.prototype = Object.create(EventTarget.prototype, {
+        constructor: { value: CustomEventTarget, configurable: true, writable: true },
+    });
+
+    for (let i = 0; i < eventNames.length; ++i) {
+        defineEventAttribute(CustomEventTarget.prototype, eventNames[i]);
+    }
+
+    return CustomEventTarget
+}
+
+/**
+ * EventTarget.
+ * 
+ * - This is constructor if no arguments.
+ * - This is a function which returns a CustomEventTarget constructor if there are arguments.
+ * 
+ * For example:
+ * 
+ *     class A extends EventTarget {}
+ *     class B extends EventTarget("message") {}
+ *     class C extends EventTarget("message", "error") {}
+ *     class D extends EventTarget(["message", "error"]) {}
+ */
+function EventTarget() {
+    /*eslint-disable consistent-return */
+    if (this instanceof EventTarget) {
+        listenersMap.set(this, new Map());
+        return
+    }
+    if (arguments.length === 1 && Array.isArray(arguments[0])) {
+        return defineCustomEventTarget(arguments[0])
+    }
+    if (arguments.length > 0) {
+        const types = new Array(arguments.length);
+        for (let i = 0; i < arguments.length; ++i) {
+            types[i] = arguments[i];
+        }
+        return defineCustomEventTarget(types)
+    }
+    throw new TypeError("Cannot call a class as a function")
+    /*eslint-enable consistent-return */
+}
+
+// Should be enumerable, but class methods are not enumerable.
+EventTarget.prototype = {
+    /**
+     * Add a given listener to this event target.
+     * @param {string} eventName The event name to add.
+     * @param {Function} listener The listener to add.
+     * @param {boolean|{capture?:boolean,passive?:boolean,once?:boolean}} [options] The options for this listener.
+     * @returns {boolean} `true` if the listener was added actually.
+     */
+    addEventListener(eventName, listener, options) {
+        if (listener == null) {
+            return false
+        }
+        if (typeof listener !== "function" && !isObject(listener)) {
+            throw new TypeError("'listener' should be a function or an object.")
+        }
+
+        const listeners = getListeners(this);
+        const optionsIsObj = isObject(options);
+        const capture = optionsIsObj ? Boolean(options.capture) : Boolean(options);
+        const listenerType = (capture ? CAPTURE : BUBBLE);
+        const newNode = {
+            listener,
+            listenerType,
+            passive: optionsIsObj && Boolean(options.passive),
+            once: optionsIsObj && Boolean(options.once),
+            next: null,
+        };
+
+        // Set it as the first node if the first node is null.
+        let node = listeners.get(eventName);
+        if (node === undefined) {
+            listeners.set(eventName, newNode);
+            return true
+        }
+
+        // Traverse to the tail while checking duplication..
+        let prev = null;
+        while (node != null) {
+            if (node.listener === listener && node.listenerType === listenerType) {
+                // Should ignore duplication.
+                return false
+            }
+            prev = node;
+            node = node.next;
+        }
+
+        // Add it.
+        prev.next = newNode;
+        return true
+    },
+
+    /**
+     * Remove a given listener from this event target.
+     * @param {string} eventName The event name to remove.
+     * @param {Function} listener The listener to remove.
+     * @param {boolean|{capture?:boolean,passive?:boolean,once?:boolean}} [options] The options for this listener.
+     * @returns {boolean} `true` if the listener was removed actually.
+     */
+    removeEventListener(eventName, listener, options) {
+        if (listener == null) {
+            return false
+        }
+
+        const listeners = getListeners(this);
+        const capture = isObject(options) ? Boolean(options.capture) : Boolean(options);
+        const listenerType = (capture ? CAPTURE : BUBBLE);
+
+        let prev = null;
+        let node = listeners.get(eventName);
+        while (node != null) {
+            if (node.listener === listener && node.listenerType === listenerType) {
+                if (prev !== null) {
+                    prev.next = node.next;
+                }
+                else if (node.next !== null) {
+                    listeners.set(eventName, node.next);
+                }
+                else {
+                    listeners.delete(eventName);
+                }
+                return true
+            }
+
+            prev = node;
+            node = node.next;
+        }
+
+        return false
+    },
+
+    /**
+     * Dispatch a given event.
+     * @param {Event|{type:string}} event The event to dispatch.
+     * @returns {boolean} `false` if canceled.
+     */
+    dispatchEvent(event) {
+        if (event == null || typeof event.type !== "string") {
+            throw new TypeError("\"event.type\" should be a string.")
+        }
+
+        // If listeners aren't registered, terminate.
+        const listeners = getListeners(this);
+        const eventName = event.type;
+        let node = listeners.get(eventName);
+        if (node == null) {
+            return true
+        }
+
+        // Since we cannot rewrite several properties, so wrap object.
+        const wrappedEvent = wrapEvent(this, event);
+
+        // This doesn't process capturing phase and bubbling phase.
+        // This isn't participating in a tree.
+        let prev = null;
+        while (node != null) {
+            // Remove this listener if it's once
+            if (node.once) {
+                if (prev !== null) {
+                    prev.next = node.next;
+                }
+                else if (node.next !== null) {
+                    listeners.set(eventName, node.next);
+                }
+                else {
+                    listeners.delete(eventName);
+                }
+            }
+            else {
+                prev = node;
+            }
+
+            // Call this listener
+            setPassiveListener(wrappedEvent, (node.passive ? node.listener : null));
+            if (typeof node.listener === "function") {
+                node.listener.call(this, wrappedEvent);
+            }
+            else if (node.listenerType !== ATTRIBUTE && typeof node.listener.handleEvent === "function") {
+                node.listener.handleEvent(wrappedEvent);
+            }
+
+            // Break if `event.stopImmediatePropagation` was called.
+            if (isStopped(wrappedEvent)) {
+                break
+            }
+
+            node = node.next;
+        }
+        setPassiveListener(wrappedEvent, null);
+        setEventPhase(wrappedEvent, 0);
+        setCurrentTarget(wrappedEvent, null);
+
+        return !wrappedEvent.defaultPrevented
+    },
+};
+
+// `constructor` is not enumerable.
+Object.defineProperty(EventTarget.prototype, "constructor", { value: EventTarget, configurable: true, writable: true });
+
+// Ensure `eventTarget instanceof window.EventTarget` is `true`.
+if (typeof window !== "undefined" && typeof window.EventTarget !== "undefined") {
+    Object.setPrototypeOf(EventTarget.prototype, window.EventTarget.prototype);
+}
+
+exports.defineEventAttribute = defineEventAttribute;
+exports.EventTarget = EventTarget;
+exports['default'] = EventTarget;
+
+module.exports = EventTarget;
+module.exports.EventTarget = module.exports["default"] = EventTarget;
+module.exports.defineEventAttribute = defineEventAttribute;
+
+});
+
+unwrapExports(eventTargetShim);
+
+var abortController = createCommonjsModule(function (module, exports) {
+/**
+ * @author Toru Nagashima <https://github.com/mysticatea>
+ * @copyright 2017 Toru Nagashima. All rights reserved.
+ * See LICENSE file in root directory for full license.
+ */
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+
+
+/**
+ * Aborted flag for each instances.
+ * @type {WeakMap<AbortSignal, boolean>}
+ */
+const abortedFlags = new WeakMap();
+
+/**
+ * The signal class.
+ * @constructor
+ * @see https://dom.spec.whatwg.org/#abortsignal
+ */
+function AbortSignal() {
+    eventTargetShim.EventTarget.call(this);
+    abortedFlags.set(this, false);
+}
+
+// Properties should be enumerable.
+AbortSignal.prototype = Object.create(eventTargetShim.EventTarget.prototype, {
+    constructor: {
+        value: AbortSignal,
+        configurable: true,
+        writable: true,
+    },
+
+    /**
+     * Returns `true` if this `AbortSignal`'s `AbortController` has signaled to abort, and `false` otherwise.
+     * @property
+     * @memberof AbortSignal
+     * @name aborted
+     * @type {boolean}
+     */
+    aborted: {
+        get: function get_aborted() { //eslint-disable-line camelcase
+            const aborted = abortedFlags.get(this);
+            console.assert(typeof aborted === "boolean", "Expected 'this' to be an 'AbortSignal' object, but got", this);
+            return Boolean(aborted)
+        },
+        configurable: true,
+        enumerable: true,
+    },
+
+    /**
+     * The event attribute for `abort` event.
+     * @property
+     * @memberof AbortSignal
+     * @name onabort
+     * @type {Function}
+     */
+});
+
+eventTargetShim.defineEventAttribute(AbortSignal.prototype, "abort");
+
+/**
+ * Abort a given signal.
+ * @param {AbortSignal} signal The signal to abort.
+ * @returns {void}
+ */
+function abortSignal(signal) {
+    if (abortedFlags.get(signal) !== false) {
+        return
+    }
+
+    abortedFlags.set(signal, true);
+    signal.dispatchEvent({ type: "abort" });
+}
+
+/**
+ * Associated signals.
+ * @type {WeakMap<AbortController, AbortSignal>}
+ */
+const signals = new WeakMap();
+
+/**
+ * Get the associated signal of a given controller.
+ * @param {AbortController} controller The controller to get its associated signal.
+ * @returns {AbortSignal} The associated signal.
+ */
+function getSignal(controller) {
+    const signal = signals.get(controller);
+    console.assert(signal != null, "Expected 'this' to be an 'AbortController' object, but got", controller);
+    return signal
+}
+
+/**
+ * The AbortController.
+ * @constructor
+ * @see https://dom.spec.whatwg.org/#abortcontroller
+ */
+function AbortController() {
+    signals.set(this, new AbortSignal());
+}
+
+// Properties should be enumerable.
+Object.defineProperties(AbortController.prototype, {
+    /**
+     * Returns the `AbortSignal` object associated with this object.
+     * @type {AbortSignal}
+     */
+    signal: {
+        get: function get_signal() { //eslint-disable-line camelcase
+            return getSignal(this)
+        },
+        configurable: true,
+        enumerable: true,
+    },
+
+    /**
+     * Abort and signal to any observers that the associated activity is to be aborted.
+     * @returns {void}
+     */
+    abort: {
+        value: function abort() {
+            // Not depend on this.signal which is overridable.
+            const signal = getSignal(this);
+            if (signal != null) {
+                abortSignal(signal);
+            }
+        },
+        configurable: true,
+        enumerable: true,
+        writable: true,
+    },
+});
+
+exports['default'] = AbortController;
+exports.AbortController = AbortController;
+exports.AbortSignal = AbortSignal;
+
+module.exports = AbortController;
+module.exports.AbortController = module.exports["default"] = AbortController;
+module.exports.AbortSignal = AbortSignal;
+
+});
+
+var AbortController = unwrapExports(abortController);
 
 var Race = function () {
   function Race(id, name) {
@@ -2420,23 +3403,24 @@ var Race = function () {
     }
   }, {
     key: 'processEntrants',
-    value: function processEntrants(html) {
+    value: function processEntrants(html, signal) {
       var $ = Race._injected_cheerio.load(html);
       return $("table[summary='List of entrants in this race'] tbody tr").map(function (i, el) {
-        return $(el).find('a').first().attr('href');
-      }).filter(function (el) {
-        return !!el;
-      }).map(function (i, href) {
-        return new User(href);
+        var link = $(el).find('a').first();
+        return { href: link.attr('href'), name: link.text().trim() };
+      }).filter(function (i, el) {
+        return !!el.href;
+      }).map(function (i, details) {
+        return new User(details.href, details.name, signal);
       });
     }
   }, {
     key: 'initEntrants',
-    value: function initEntrants() {
+    value: function initEntrants(signal) {
       var _this = this;
 
       return this.getEntrants(this.id).then(function (html) {
-        return _this.processEntrants(html);
+        return _this.processEntrants(html, signal);
       }).then(function (users) {
         return _this._users = users.toArray();
       });
@@ -2449,14 +3433,26 @@ var Race = function () {
       if (this._users) {
         return es6Promise.resolve(this._users);
       }
-      return this.initEntrants().then(function (entrants) {
+
+      if (this._allPromise) {
+        return this._allPromise;
+      }
+
+      var abortController$$1 = new AbortController();
+      var signal = abortController$$1.signal;
+
+      this._allPromise = this.initEntrants(signal).then(function (entrants) {
         //want point promises to settle
         return es6Promise.all(entrants.map(function (entrant) {
           return entrant.pointsPromise;
         })).then(function () {
           return _this2._users = User.sort(_this2._users);
+        }).catch(function (err) {
+          abortController$$1.abort(); //cancels all other fetches
+          throw { message: err, users: _this2._users };
         });
       });
+      return this._allPromise;
     }
   }], [{
     key: 'inject',

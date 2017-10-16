@@ -1,12 +1,17 @@
 //import URI from 'urijs';
 import Promise from 'es6-promise';
 import { parse } from 'uri-js';
+import serialFetch from 'serial-fetch';
+import delayFetch from './delay-fetch';
+
 
 const DEFAULT_NUM = 999;
 
 export default class User{
-  constructor(href){
+  constructor(href, name, signal){
     this.id = this.idFromUrl(href);//3; //new URI(href).search(true).person_id;
+    this.name = name;
+    this.signal = signal;
     this.points_href = href;
     this.pointsPromise = this.initPoints();
     this.regional_rank = DEFAULT_NUM;
@@ -20,8 +25,14 @@ export default class User{
   }
 
   fetchPoints(){
-    return User._injected_fetch(`https://www.britishcycling.org.uk/${this.points_href}`)
-      .then(res => res.text());
+    return User._injected_fetch(`https://www.britishcycling.org.uk/${this.points_href}`, {signal: this.signal})
+      .then(res => {
+        if(res.status >= 400) {
+          this.error = res.statusText;
+          throw res.statusText;
+        }
+        return res.text();
+      });
   }
 
   getPoints(){
@@ -91,6 +102,10 @@ export default class User{
 
   static inject(attr, obj) {
     let privateVarName = `_injected_${attr}`;
+    if(attr === 'fetch') {
+      obj = serialFetch(delayFetch(obj, 2000));
+    }
     this[privateVarName] = obj;
+
   }
 }

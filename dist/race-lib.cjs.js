@@ -6,6 +6,25 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var Promise$1 = _interopDefault(require('es6-promise'));
 var uriJs = require('uri-js');
+var serialFetch = _interopDefault(require('serial-fetch'));
+var AbortController = _interopDefault(require('abort-controller'));
+
+function delayFetch(originalFetch, delay) {
+
+  return function fetch(input, init) {
+    return new Promise(function (resolve, reject) {
+      setTimeout(function () {
+        //bit of work around for delayed serialized requests and abort.
+        //manually check in signal.abort has been called as fetch wouldn't have existed when first called
+        if (init.signal && init.signal.aborted) {
+          reject({ name: 'AbortError' });
+        } else {
+          originalFetch(input, init).then(resolve).catch(reject);
+        }
+      }, delay);
+    });
+  };
+}
 
 var asyncGenerator = function () {
   function AwaitValue(value) {
@@ -152,10 +171,12 @@ var createClass = function () {
 var DEFAULT_NUM = 999;
 
 var User = function () {
-  function User(href) {
+  function User(href, name, signal) {
     classCallCheck(this, User);
 
     this.id = this.idFromUrl(href); //3; //new URI(href).search(true).person_id;
+    this.name = name;
+    this.signal = signal;
     this.points_href = href;
     this.pointsPromise = this.initPoints();
     this.regional_rank = DEFAULT_NUM;
@@ -172,7 +193,13 @@ var User = function () {
   }, {
     key: 'fetchPoints',
     value: function fetchPoints() {
-      return User._injected_fetch('https://www.britishcycling.org.uk/' + this.points_href).then(function (res) {
+      var _this = this;
+
+      return User._injected_fetch('https://www.britishcycling.org.uk/' + this.points_href, { signal: this.signal }).then(function (res) {
+        if (res.status >= 400) {
+          _this.error = res.statusText;
+          throw res.statusText;
+        }
         return res.text();
       });
     }
@@ -188,17 +215,17 @@ var User = function () {
   }, {
     key: 'initPoints',
     value: function initPoints() {
-      var _this = this;
+      var _this2 = this;
 
       return this.getPoints().then(function (body) {
         var $ = User._injected_cheerio.load(body);
         $('dd').each(function (i, el) {
-          _this.parseDd($(el).text());
+          _this2.parseDd($(el).text());
         });
         if ($('main h1').text().split(':')[1]) {
-          _this.name = $('main h1').text().split(':')[1].trim();
+          _this2.name = $('main h1').text().split(':')[1].trim();
         }
-        return _this;
+        return _this2;
       });
     }
   }, {
@@ -252,6 +279,9 @@ var User = function () {
     key: 'inject',
     value: function inject(attr, obj) {
       var privateVarName = '_injected_' + attr;
+      if (attr === 'fetch') {
+        obj = serialFetch(delayFetch(obj, 2000));
+      }
       this[privateVarName] = obj;
     }
   }]);
@@ -289,23 +319,24 @@ var Race = function () {
     }
   }, {
     key: 'processEntrants',
-    value: function processEntrants(html) {
+    value: function processEntrants(html, signal) {
       var $ = Race._injected_cheerio.load(html);
       return $("table[summary='List of entrants in this race'] tbody tr").map(function (i, el) {
-        return $(el).find('a').first().attr('href');
-      }).filter(function (el) {
-        return !!el;
-      }).map(function (i, href) {
-        return new User(href);
+        var link = $(el).find('a').first();
+        return { href: link.attr('href'), name: link.text().trim() };
+      }).filter(function (i, el) {
+        return !!el.href;
+      }).map(function (i, details) {
+        return new User(details.href, details.name, signal);
       });
     }
   }, {
     key: 'initEntrants',
-    value: function initEntrants() {
+    value: function initEntrants(signal) {
       var _this = this;
 
       return this.getEntrants(this.id).then(function (html) {
-        return _this.processEntrants(html);
+        return _this.processEntrants(html, signal);
       }).then(function (users) {
         return _this._users = users.toArray();
       });
@@ -318,14 +349,26 @@ var Race = function () {
       if (this._users) {
         return Promise$1.resolve(this._users);
       }
-      return this.initEntrants().then(function (entrants) {
+
+      if (this._allPromise) {
+        return this._allPromise;
+      }
+
+      var abortController = new AbortController();
+      var signal = abortController.signal;
+
+      this._allPromise = this.initEntrants(signal).then(function (entrants) {
         //want point promises to settle
         return Promise$1.all(entrants.map(function (entrant) {
           return entrant.pointsPromise;
         })).then(function () {
           return _this2._users = User.sort(_this2._users);
+        }).catch(function (err) {
+          abortController.abort(); //cancels all other fetches
+          throw { message: err, users: _this2._users };
         });
       });
+      return this._allPromise;
     }
   }], [{
     key: 'inject',
