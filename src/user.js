@@ -10,7 +10,7 @@ const DEFAULT_NUM = 999;
 export default class User{
   constructor(href, name, signal){
     this.id = this.idFromUrl(href);//3; //new URI(href).search(true).person_id;
-    this.name = name;
+    this.name = name || '';
     this.signal = signal;
     this.points_href = href;
     this.pointsPromise = this.initPoints();
@@ -92,8 +92,9 @@ export default class User{
       return a.national_rank - b.national_rank;
     } else if (a.regional_rank !== DEFAULT_NUM || b.regional_rank !== DEFAULT_NUM){
       return a.regional_rank - b.regional_rank;
+    } else {
+      return a.name.localeCompare(b.name);
     }
-    return 0;
   }
 
   static sort(users){
