@@ -221,6 +221,7 @@ var User = function () {
     this.name = name || '';
     this.signal = signal;
     this.points_href = href;
+    this.points_loaded = false;
     this.pointsPromise = this.initPoints();
     this.regional_rank = DEFAULT_NUM;
     this.national_rank = DEFAULT_NUM;
@@ -261,6 +262,7 @@ var User = function () {
       var _this2 = this;
 
       return this.getPoints().then(function (body) {
+        _this2.points_loaded = true;
         var $ = User._injected_cheerio.load(body);
         $('dd').each(function (i, el) {
           _this2.parseDd($(el).text());
@@ -433,7 +435,9 @@ var Race = function (_EventTarget) {
         entrant.pointsPromise.then(function () {
           count = count + 1;
           _this4.dispatchEvent({ type: 'entrantLoaded', detail: { users: User.sort(_this4._users), loaded: count, total: entrants.length } });
-        }).catch(function (err) {});
+        }).catch(function (err) {
+          _this4.dispatchEvent({ type: 'entrantError', detail: { user: entrant, error: err } });
+        });
       });
     }
   }], [{
@@ -448,6 +452,7 @@ var Race = function (_EventTarget) {
 }(eventTargetShim.EventTarget);
 
 eventTargetShim.defineEventAttribute(Race.prototype, "entrantLoaded");
+eventTargetShim.defineEventAttribute(Race.prototype, "entrantError");
 
 var Event = function () {
   function Event(id, name) {

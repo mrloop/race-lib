@@ -82,7 +82,9 @@ export default class Race extends EventTarget {
       entrant.pointsPromise.then( () => {
         count = count + 1;
         this.dispatchEvent({type: 'entrantLoaded', detail: { users: User.sort(this._users), loaded: count, total: entrants.length }});
-      }).catch(err => {});
+      }).catch(err => {
+        this.dispatchEvent({type: 'entrantError', detail: { user: entrant, error: err }});
+      });
     });
   }
 
@@ -94,3 +96,4 @@ export default class Race extends EventTarget {
 }
 
 defineEventAttribute(Race.prototype, "entrantLoaded")
+defineEventAttribute(Race.prototype, "entrantError")

@@ -13,6 +13,7 @@ export default class User{
     this.name = name || '';
     this.signal = signal;
     this.points_href = href;
+    this.points_loaded = false;
     this.pointsPromise = this.initPoints();
     this.regional_rank = DEFAULT_NUM;
     this.national_rank = DEFAULT_NUM;
@@ -45,6 +46,7 @@ export default class User{
 
   initPoints(){
     return this.getPoints().then(body => {
+      this.points_loaded = true;
       const $ = User._injected_cheerio.load(body);
       $('dd').each( (i, el) => {
         this.parseDd($(el).text());
