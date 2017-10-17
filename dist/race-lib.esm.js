@@ -8,12 +8,12 @@ function delayFetch(originalFetch, delay) {
 
   return function fetch(input, init) {
     return new Promise(function (resolve, reject) {
+      //bit of work around for delayed serialized requests and abort.
+      //manually check in signal.abort has been called as fetch wouldn't have existed when first called
       if (init.signal && init.signal.aborted) {
         reject({ name: 'AbortError' });
       } else {
         setTimeout(function () {
-          //bit of work around for delayed serialized requests and abort.
-          //manually check in signal.abort has been called as fetch wouldn't have existed when first called
           originalFetch(input, init).then(resolve).catch(reject);
         }, delay);
       }
@@ -421,12 +421,12 @@ var Race = function (_EventTarget) {
 
       var count = 0;
 
-      this.dispatchEvent({ type: 'entrantLoaded', detail: { loaded: count, total: entrants.length } });
+      this.dispatchEvent({ type: 'entrantLoaded', detail: { users: this._users, loaded: count, total: entrants.length } });
 
       entrants.forEach(function (entrant) {
         entrant.pointsPromise.then(function () {
           count = count + 1;
-          _this4.dispatchEvent({ type: 'entrantLoaded', detail: { loaded: count, total: entrants.length } });
+          _this4.dispatchEvent({ type: 'entrantLoaded', detail: { users: User.sort(_this4._users), loaded: count, total: entrants.length } });
         }).catch(function (err) {});
       });
     }

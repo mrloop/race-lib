@@ -76,12 +76,12 @@ export default class Race extends EventTarget {
   setupNotifications(entrants) {
     let count = 0;
 
-    this.dispatchEvent({type: 'entrantLoaded', detail: { loaded: count, total: entrants.length }});
+    this.dispatchEvent({type: 'entrantLoaded', detail: { users: this._users, loaded: count, total: entrants.length }});
 
     entrants.forEach( entrant => {
       entrant.pointsPromise.then( () => {
         count = count + 1;
-        this.dispatchEvent({type: 'entrantLoaded', detail: { loaded: count, total: entrants.length }});
+        this.dispatchEvent({type: 'entrantLoaded', detail: { users: User.sort(this._users), loaded: count, total: entrants.length }});
       }).catch(err => {});
     });
   }
