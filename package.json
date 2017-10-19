@@ -1,6 +1,6 @@
 {
   "name": "race-lib",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "retrieve event data from britishcycling.org",
   "main": "dist/race-lib.cjs.js",
   "module": "dist/race-lib.esm.js",

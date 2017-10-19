@@ -36,10 +36,14 @@ export default class Event {
     let $ = Event._injected_cheerio.load(html);
     this.name = $('.article--event h1').text()
     this.races = $("table:has('.table__th--title')").first().find('.table__th--title').map((i, el) => {
-      let raceName = this.cleanStr($(el).text());
+      let raceName = this.cleanName($(el).text());
       let raceId = $(el).find('.load_race_entrants').attr('data-race-id');
       return new Race(raceId, raceName);
     }).toArray();
+  }
+
+  cleanName(str) {
+    return this.cleanStr(str.replace(/View Entrants/g, ''));
   }
 
   cleanStr(str) {

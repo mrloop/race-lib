@@ -500,10 +500,15 @@ var Event = function () {
       var $ = Event._injected_cheerio.load(html);
       this.name = $('.article--event h1').text();
       this.races = $("table:has('.table__th--title')").first().find('.table__th--title').map(function (i, el) {
-        var raceName = _this2.cleanStr($(el).text());
+        var raceName = _this2.cleanName($(el).text());
         var raceId = $(el).find('.load_race_entrants').attr('data-race-id');
         return new Race(raceId, raceName);
       }).toArray();
+    }
+  }, {
+    key: 'cleanName',
+    value: function cleanName(str) {
+      return this.cleanStr(str.replace(/View Entrants/g, ''));
     }
   }, {
     key: 'cleanStr',
