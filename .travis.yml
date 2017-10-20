@@ -5,3 +5,4 @@ node_js:
   - "node"
   - "lts/*"
 cache: yarn
+install: yarn --frozen-lockfile
