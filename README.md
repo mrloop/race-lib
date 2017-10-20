@@ -17,4 +17,4 @@ Event.upcomming().then((events) => {
 });
 ```
 
-See [race-cli](https://github.com/mrloop/race-cli) for more examples.
+See [race-cli](https://github.com/mrloop/race-cli) for example of usage in node and [race-ext](https://github.com/mrloop/race-ext) for browser usage.
