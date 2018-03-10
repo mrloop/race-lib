@@ -3417,7 +3417,7 @@ module.exports.AbortSignal = AbortSignal;
 
 });
 
-var AbortController = unwrapExports(abortController);
+var AbortControllerImpl = unwrapExports(abortController);
 
 var Race = function (_EventTarget) {
   inherits(Race, _EventTarget);
@@ -3490,7 +3490,10 @@ var Race = function (_EventTarget) {
         return this._allPromise;
       }
 
-      var abortController$$1 = new AbortController();
+      var abortController$$1 = new AbortControllerImpl();
+      if (typeof AbortController !== "undefined") {
+        abortController$$1 = new AbortController();
+      }
       var signal = abortController$$1.signal;
 
       this._allPromise = this.initEntrants(signal).then(function (entrants) {

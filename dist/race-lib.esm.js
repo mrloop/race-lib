@@ -1,7 +1,7 @@
 import Promise$1 from 'es6-promise';
 import { parse } from 'uri-js';
 import serialFetch from 'serial-fetch';
-import AbortController from 'abort-controller';
+import AbortControllerImpl from 'abort-controller';
 import { EventTarget, defineEventAttribute } from 'event-target-shim';
 
 function delayFetch(originalFetch, delay) {
@@ -399,7 +399,10 @@ var Race = function (_EventTarget) {
         return this._allPromise;
       }
 
-      var abortController = new AbortController();
+      var abortController = new AbortControllerImpl();
+      if (typeof AbortController !== "undefined") {
+        abortController = new AbortController();
+      }
       var signal = abortController.signal;
 
       this._allPromise = this.initEntrants(signal).then(function (entrants) {

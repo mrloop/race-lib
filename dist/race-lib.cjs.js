@@ -7,7 +7,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var Promise$1 = _interopDefault(require('es6-promise'));
 var uriJs = require('uri-js');
 var serialFetch = _interopDefault(require('serial-fetch'));
-var AbortController = _interopDefault(require('abort-controller'));
+var AbortControllerImpl = _interopDefault(require('abort-controller'));
 var eventTargetShim = require('event-target-shim');
 
 function delayFetch(originalFetch, delay) {
@@ -405,7 +405,10 @@ var Race = function (_EventTarget) {
         return this._allPromise;
       }
 
-      var abortController = new AbortController();
+      var abortController = new AbortControllerImpl();
+      if (typeof AbortController !== "undefined") {
+        abortController = new AbortController();
+      }
       var signal = abortController.signal;
 
       this._allPromise = this.initEntrants(signal).then(function (entrants) {

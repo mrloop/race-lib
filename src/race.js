@@ -1,7 +1,7 @@
 import User from './user';
 
 import Promise from 'es6-promise';
-import AbortController from 'abort-controller';
+import AbortControllerImpl from 'abort-controller';
 import { EventTarget, defineEventAttribute } from 'event-target-shim';
 
 export default class Race extends EventTarget {
@@ -55,7 +55,10 @@ export default class Race extends EventTarget {
       return this._allPromise;
     }
 
-    const abortController = new AbortController();
+    let abortController = new AbortControllerImpl();
+    if (typeof AbortController !== "undefined") {
+      abortController = new AbortController();
+    }
     const signal = abortController.signal;
 
     this._allPromise = this.initEntrants(signal).then((entrants) => {
