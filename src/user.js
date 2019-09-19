@@ -1,4 +1,3 @@
-//import URI from 'urijs';
 import Promise from 'es6-promise';
 import { parse } from 'uri-js';
 import serialFetch from 'serial-fetch';
