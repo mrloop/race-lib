@@ -13,10 +13,19 @@ export default [
       name: 'race-lib',
     },
     plugins: [
-      resolve({preferBuiltins: false}),
-      commonjs(),
+      resolve({
+        mainFields: ['module', 'main'],
+        preferBuiltins: false
+      }),
+      commonjs({
+        namedExports: {
+          'uri-js': ['parse']
+        }
+      }),
       babel({
-        exclude: ['node_modules/**']
+        exclude: ['node_modules/**'],
+        plugins: ['@babel/external-helpers'],
+        externalHelpers: true
       })
 		]
 	},
@@ -28,7 +37,7 @@ export default [
 	// the `targets` option which can specify `dest` and `format`)
 	{
 		input: 'src/index.js',
-		external: ['uri-js', 'es6-promise'],
+		external: ['uri-js', 'es6-promise', 'abort-controller', 'event-target-shim', 'serial-fetch'],
 		output: [
 			{ file: pkg.main, format: 'cjs' },
 			{ file: pkg.module, format: 'es' }
