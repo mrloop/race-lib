@@ -1,6 +1,6 @@
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import babel from 'rollup-plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import babel from '@rollup/plugin-babel';
 import pkg from './package.json';
 
 export default [
@@ -17,15 +17,10 @@ export default [
         mainFields: ['module', 'main'],
         preferBuiltins: false
       }),
-      commonjs({
-        namedExports: {
-          'uri-js': ['parse']
-        }
-      }),
+      commonjs(),
       babel({
         exclude: ['node_modules/**'],
-        plugins: ['@babel/external-helpers'],
-        externalHelpers: true
+        babelHelpers: 'bundled',
       })
 		]
 	},
@@ -44,7 +39,8 @@ export default [
 		],
     plugins: [
       babel({
-        exclude: ['node_modules/**']
+        exclude: ['node_modules/**'],
+        babelHelpers: 'bundled',
       })
     ]
 	}

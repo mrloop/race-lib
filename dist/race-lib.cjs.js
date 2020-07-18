@@ -63,6 +63,19 @@ function _setPrototypeOf(o, p) {
   return _setPrototypeOf(o, p);
 }
 
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -77,6 +90,25 @@ function _possibleConstructorReturn(self, call) {
   }
 
   return _assertThisInitialized(self);
+}
+
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+  return function _createSuperInternal() {
+    var Super = _getPrototypeOf(Derived),
+        result;
+
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+
+    return _possibleConstructorReturn(this, result);
+  };
 }
 
 function delayFetch(originalFetch, delay) {
@@ -99,9 +131,7 @@ function delayFetch(originalFetch, delay) {
 
 var DEFAULT_NUM = 999;
 
-var User =
-/*#__PURE__*/
-function () {
+var User = /*#__PURE__*/function () {
   function User(href, name, signal) {
     _classCallCheck(this, User);
 
@@ -241,17 +271,17 @@ function () {
   return User;
 }();
 
-var Race =
-/*#__PURE__*/
-function (_EventTarget) {
+var Race = /*#__PURE__*/function (_EventTarget) {
   _inherits(Race, _EventTarget);
+
+  var _super = _createSuper(Race);
 
   function Race(id, name) {
     var _this;
 
     _classCallCheck(this, Race);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Race).call(this));
+    _this = _super.call(this);
     _this.name = name;
     _this.id = id;
     return _this;
@@ -396,9 +426,7 @@ function (_EventTarget) {
 eventTargetShim.defineEventAttribute(Race.prototype, "entrantLoaded");
 eventTargetShim.defineEventAttribute(Race.prototype, "entrantError");
 
-var Event =
-/*#__PURE__*/
-function () {
+var Event = /*#__PURE__*/function () {
   function Event(id, name) {
     _classCallCheck(this, Event);
 

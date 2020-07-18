@@ -1,6 +1,6 @@
 {
   "name": "race-lib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "retrieve event data from britishcycling.org",
   "main": "dist/race-lib.cjs.js",
   "module": "dist/race-lib.esm.js",
@@ -27,23 +27,29 @@
     "uri-js": "^4.2"
   },
   "devDependencies": {
-    "ava": "^2.4",
+    "@ava/babel": "1.0",
     "@babel/core": "^7.6",
     "@babel/plugin-external-helpers": "^7.2",
     "@babel/preset-env": "^7.6",
+    "@babel/register": "^7.10",
+    "ava": "^3.10",
     "cheerio": "^1.0.0-rc.3",
     "node-fetch": "^2.6",
     "qunit": "^2.9",
     "race-fix": "^0.0.2",
-    "rollup": "^1.21",
-    "rollup-plugin-babel": "^4.3",
-    "rollup-plugin-commonjs": "^10.1",
-    "rollup-plugin-node-resolve": "^5.2",
-    "regenerator-runtime": "^0.13.3"
+    "regenerator-runtime": "^0.13.3",
+    "rollup": "^2.21",
+    "@rollup/plugin-babel": "^5.1",
+    "@rollup/plugin-commonjs": "^14.0",
+    "@rollup/plugin-node-resolve": "^8.4"
   },
   "ava": {
-    "files": ["tests/*.js"],
+    "babel": true,
+    "files": [
+      "tests/*.js"
+    ],
     "require": [
+      "@babel/register",
       "regenerator-runtime"
     ]
   },
