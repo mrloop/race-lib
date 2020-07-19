@@ -47,7 +47,7 @@ export default class User{
     return this.getPoints().then(body => {
       this.points_loaded = true;
       const $ = User._injected_cheerio.load(body);
-      $('dd').each( (i, el) => {
+      $('dd').each((i, el) => {
         this.parseDd($(el).text());
       });
       if($('main h1').text().split(':')[1]) {
@@ -105,9 +105,12 @@ export default class User{
   static inject(attr, obj) {
     let privateVarName = `_injected_${attr}`;
     if(attr === 'fetch') {
-      obj = serialFetch(delayFetch(obj, 4000));
+      if (typeof serialFetch === 'function') {
+        obj = serialFetch(delayFetch(obj, 4000));
+      } else { // shouldn't be necessary - issue with rollup?
+        obj = serialFetch.default(delayFetch(obj, 4000));
+      }
     }
     this[privateVarName] = obj;
-
   }
 }

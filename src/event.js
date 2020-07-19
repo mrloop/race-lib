@@ -69,7 +69,6 @@ export default class Event {
   }
 
   static getUpcomming() {
-    debugger
     if(Event._injected_events_html) {
       return Promise.resolve(Event._injected_events_html);
     } else {
