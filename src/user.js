@@ -51,7 +51,7 @@ export default class User{
         this.parseDd($(el).text());
       });
       if($('main h1').text().split(':')[1]) {
-        this.name = $('main h1').text().split(':')[1].trim();
+        this.name = this.name || $('main h1').text().split(':')[1].trim();
       }
       return this;
     });
@@ -77,7 +77,11 @@ export default class User{
         this.national_rank = Number(arr[1]) || DEFAULT_NUM;
         break;
       case 'Regional Rank':
-        this.regional_rank = Number(arr[1]) || DEFAULT_NUM;
+        if (User._randomizeRank) {
+          this.regional_rank = this.getRandomInt(1,999);
+        } else {
+          this.regional_rank = Number(arr[1]) || DEFAULT_NUM;
+        }
         break;
       case 'Regional Points':
         this.regional_points = Number(arr[1]) || DEFAULT_NUM;
@@ -86,6 +90,16 @@ export default class User{
         this.national_points = Number(arr[1]) || DEFAULT_NUM;
         break;
     }
+  }
+
+  getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+  }
+
+  static randomizeRank() {
+    this._randomizeRank = true;
   }
 
   static compareFnc(a, b){
