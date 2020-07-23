@@ -187,7 +187,7 @@ var User = /*#__PURE__*/function () {
         });
 
         if ($('main h1').text().split(':')[1]) {
-          _this2.name = $('main h1').text().split(':')[1].trim();
+          _this2.name = _this2.name || $('main h1').text().split(':')[1].trim();
         }
 
         return _this2;
@@ -221,7 +221,12 @@ var User = /*#__PURE__*/function () {
           break;
 
         case 'Regional Rank':
-          this.regional_rank = Number(arr[1]) || DEFAULT_NUM;
+          if (User._randomizeRank) {
+            this.regional_rank = this.getRandomInt(1, 999);
+          } else {
+            this.regional_rank = Number(arr[1]) || DEFAULT_NUM;
+          }
+
           break;
 
         case 'Regional Points':
@@ -233,7 +238,19 @@ var User = /*#__PURE__*/function () {
           break;
       }
     }
+  }, {
+    key: "getRandomInt",
+    value: function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+    }
   }], [{
+    key: "randomizeRank",
+    value: function randomizeRank() {
+      this._randomizeRank = true;
+    }
+  }, {
     key: "compareFnc",
     value: function compareFnc(a, b) {
       if (a.national_rank !== DEFAULT_NUM || b.national_rank !== DEFAULT_NUM) {
@@ -255,7 +272,12 @@ var User = /*#__PURE__*/function () {
       var privateVarName = "_injected_".concat(attr);
 
       if (attr === 'fetch') {
-        obj = serialFetch(delayFetch(obj, 4000));
+        if (typeof serialFetch === 'function') {
+          obj = serialFetch(delayFetch(obj, 4000));
+        } else {
+          // shouldn't be necessary - issue with rollup?
+          obj = serialFetch.default(delayFetch(obj, 4000));
+        }
       }
 
       this[privateVarName] = obj;
@@ -329,6 +351,18 @@ var Race = /*#__PURE__*/function (_EventTarget) {
       }).then(function (users) {
         return _this2._users = users.toArray();
       });
+    } // return users promise without waiting for users points promises to resolve
+    // for more response UI. Use this in favour of `entrants`. Keeping `entrants` for use
+    // in race-ext glimmerjs app, could be removed if race-ext glimmerjs app updated
+
+  }, {
+    key: "users",
+    value: function users() {
+      if (this._usersPromise) {
+        return this._usersPromise;
+      }
+
+      return this._usersPromise = this.initEntrants();
     }
   }, {
     key: "entrants",
@@ -515,8 +549,6 @@ var Event = /*#__PURE__*/function () {
   }, {
     key: "getUpcomming",
     value: function getUpcomming() {
-      debugger;
-
       if (Event._injected_events_html) {
         return Promise$1.resolve(Event._injected_events_html);
       } else {

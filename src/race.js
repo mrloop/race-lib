@@ -46,6 +46,16 @@ export default class Race extends EventTarget {
     });
   }
 
+  // return users promise without waiting for users points promises to resolve
+  // for more response UI. Use this in favour of `entrants`. Keeping `entrants` for use
+  // in race-ext glimmerjs app, could be removed if race-ext glimmerjs app updated
+  users() {
+    if(this._usersPromise) {
+      return this._usersPromise;
+    }
+    return this._usersPromise = this.initEntrants();
+  }
+
   entrants() {
     if(this._users) {
       return Promise.resolve(this._users);
