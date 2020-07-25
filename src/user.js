@@ -77,8 +77,8 @@ export default class User{
         this.national_rank = Number(arr[1]) || DEFAULT_NUM;
         break;
       case 'Regional Rank':
-        if (User._randomizeRank) {
-          this.regional_rank = this.getRandomInt(1,999);
+        if (User._fakeRank) {
+          this.regional_rank = [...this.name].reduce((a,c) => a+c.charCodeAt(), 0);
         } else {
           this.regional_rank = Number(arr[1]) || DEFAULT_NUM;
         }
@@ -90,16 +90,6 @@ export default class User{
         this.national_points = Number(arr[1]) || DEFAULT_NUM;
         break;
     }
-  }
-
-  getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-  }
-
-  static randomizeRank() {
-    this._randomizeRank = true;
   }
 
   static compareFnc(a, b){
@@ -118,6 +108,7 @@ export default class User{
 
   static inject(attr, obj) {
     let privateVarName = `_injected_${attr}`;
+    this._fakeRank = true;
     if(attr === 'fetch') {
       if (typeof serialFetch === 'function') {
         obj = serialFetch(delayFetch(obj, 4000));

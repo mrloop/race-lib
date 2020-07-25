@@ -105,6 +105,39 @@ function _createSuper(Derived) {
   };
 }
 
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+}
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+}
+
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+  return arr2;
+}
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
 function delayFetch(originalFetch, delay) {
   return function fetch(input, init) {
     return new Promise(function (resolve, reject) {
@@ -221,8 +254,10 @@ var User = /*#__PURE__*/function () {
           break;
 
         case 'Regional Rank':
-          if (User._randomizeRank) {
-            this.regional_rank = this.getRandomInt(1, 999);
+          if (User._fakeRank) {
+            this.regional_rank = _toConsumableArray(this.name).reduce(function (a, c) {
+              return a + c.charCodeAt();
+            }, 0);
           } else {
             this.regional_rank = Number(arr[1]) || DEFAULT_NUM;
           }
@@ -238,19 +273,7 @@ var User = /*#__PURE__*/function () {
           break;
       }
     }
-  }, {
-    key: "getRandomInt",
-    value: function getRandomInt(min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-    }
   }], [{
-    key: "randomizeRank",
-    value: function randomizeRank() {
-      this._randomizeRank = true;
-    }
-  }, {
     key: "compareFnc",
     value: function compareFnc(a, b) {
       if (a.national_rank !== DEFAULT_NUM || b.national_rank !== DEFAULT_NUM) {
@@ -270,6 +293,7 @@ var User = /*#__PURE__*/function () {
     key: "inject",
     value: function inject(attr, obj) {
       var privateVarName = "_injected_".concat(attr);
+      this._fakeRank = true;
 
       if (attr === 'fetch') {
         if (typeof serialFetch === 'function') {
