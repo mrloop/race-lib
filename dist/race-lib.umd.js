@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global['race-lib'] = {}));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global['race-lib'] = {}));
 }(this, (function (exports) { 'use strict';
 
   function _classCallCheck(instance, Constructor) {
@@ -63,7 +63,7 @@
     if (typeof Proxy === "function") return true;
 
     try {
-      Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+      Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
       return true;
     } catch (e) {
       return false;
@@ -114,7 +114,7 @@
   }
 
   function _iterableToArray(iter) {
-    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
   }
 
   function _unsupportedIterableToArray(o, minLen) {
@@ -164,7 +164,7 @@
    */
 
   (function (global, factory) {
-  	 module.exports = factory() ;
+  	module.exports = factory() ;
   }(commonjsGlobal, (function () {
   function objectOrFunction(x) {
     var type = typeof x;
@@ -1327,9 +1327,9 @@
   });
 
   var uri_all = createCommonjsModule(function (module, exports) {
-  /** @license URI.js v4.2.1 (c) 2011 Gary Court. License: http://github.com/garycourt/uri-js */
+  /** @license URI.js v4.4.1 (c) 2011 Gary Court. License: http://github.com/garycourt/uri-js */
   (function (global, factory) {
-  	 factory(exports) ;
+  	factory(exports) ;
   }(commonjsGlobal, (function (exports) {
   function merge() {
       for (var _len = arguments.length, sets = Array(_len), _key = 0; _key < _len; _key++) {
@@ -1383,10 +1383,10 @@
           //subset, excludes bidi control characters
       IPRIVATE$$ = isIRI ? "[\\uE000-\\uF8FF]" : "[]",
           //subset
-      UNRESERVED$$ = merge(ALPHA$$, DIGIT$$, "[\\-\\.\\_\\~]", UCSCHAR$$),
-          SCHEME$ = subexp(ALPHA$$ + merge(ALPHA$$, DIGIT$$, "[\\+\\-\\.]") + "*"),
-          USERINFO$ = subexp(subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\:]")) + "*"),
-          DEC_OCTET_RELAXED$ = subexp(subexp("25[0-5]") + "|" + subexp("2[0-4]" + DIGIT$$) + "|" + subexp("1" + DIGIT$$ + DIGIT$$) + "|" + subexp("0?[1-9]" + DIGIT$$) + "|0?0?" + DIGIT$$),
+      UNRESERVED$$ = merge(ALPHA$$, DIGIT$$, "[\\-\\.\\_\\~]", UCSCHAR$$);
+          subexp(ALPHA$$ + merge(ALPHA$$, DIGIT$$, "[\\+\\-\\.]") + "*");
+          subexp(subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\:]")) + "*");
+          var DEC_OCTET_RELAXED$ = subexp(subexp("25[0-5]") + "|" + subexp("2[0-4]" + DIGIT$$) + "|" + subexp("1" + DIGIT$$ + DIGIT$$) + "|" + subexp("0?[1-9]" + DIGIT$$) + "|0?0?" + DIGIT$$),
           //relaxed parsing rules
       IPV4ADDRESS$ = subexp(DEC_OCTET_RELAXED$ + "\\." + DEC_OCTET_RELAXED$ + "\\." + DEC_OCTET_RELAXED$ + "\\." + DEC_OCTET_RELAXED$),
           H16$ = subexp(HEXDIG$$ + "{1,4}"),
@@ -1410,14 +1410,14 @@
       IPV6ADDRESS9$ = subexp(subexp(subexp(H16$ + "\\:") + "{0,6}" + H16$) + "?\\:\\:"),
           //[ *6( h16 ":" ) h16 ] "::"
       IPV6ADDRESS$ = subexp([IPV6ADDRESS1$, IPV6ADDRESS2$, IPV6ADDRESS3$, IPV6ADDRESS4$, IPV6ADDRESS5$, IPV6ADDRESS6$, IPV6ADDRESS7$, IPV6ADDRESS8$, IPV6ADDRESS9$].join("|")),
-          ZONEID$ = subexp(subexp(UNRESERVED$$ + "|" + PCT_ENCODED$) + "+"),
+          ZONEID$ = subexp(subexp(UNRESERVED$$ + "|" + PCT_ENCODED$) + "+");
           //RFC 6874, with relaxed parsing rules
-      IPVFUTURE$ = subexp("[vV]" + HEXDIG$$ + "+\\." + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\:]") + "+"),
+      subexp("[vV]" + HEXDIG$$ + "+\\." + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\:]") + "+");
           //RFC 6874
-      REG_NAME$ = subexp(subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$)) + "*"),
-          PCHAR$ = subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\:\\@]")),
-          SEGMENT_NZ_NC$ = subexp(subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\@]")) + "+"),
-          QUERY$ = subexp(subexp(PCHAR$ + "|" + merge("[\\/\\?]", IPRIVATE$$)) + "*");
+      subexp(subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$)) + "*");
+          var PCHAR$ = subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\:\\@]"));
+          subexp(subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\@]")) + "+");
+          subexp(subexp(PCHAR$ + "|" + merge("[\\/\\?]", IPRIVATE$$)) + "*");
       return {
           NOT_SCHEME: new RegExp(merge("[^]", ALPHA$$, DIGIT$$, "[\\+\\-\\.]"), "g"),
           NOT_USERINFO: new RegExp(merge("[^\\%\\:]", UNRESERVED$$, SUB_DELIMS$$), "g"),
@@ -2250,9 +2250,9 @@
               return "[" + $1 + ($2 ? "%25" + $2 : "") + "]";
           }));
       }
-      if (typeof components.port === "number") {
+      if (typeof components.port === "number" || typeof components.port === "string") {
           uriTokens.push(":");
-          uriTokens.push(components.port.toString(10));
+          uriTokens.push(String(components.port));
       }
       return uriTokens.length ? uriTokens.join("") : undefined;
   }
@@ -2455,8 +2455,9 @@
           return components;
       },
       serialize: function serialize(components, options) {
+          var secure = String(components.scheme).toLowerCase() === "https";
           //normalize the default port
-          if (components.port === (String(components.scheme).toLowerCase() !== "https" ? 80 : 443) || components.port === "") {
+          if (components.port === (secure ? 443 : 80) || components.port === "") {
               components.port = undefined;
           }
           //normalize the empty path
@@ -2477,9 +2478,60 @@
       serialize: handler.serialize
   };
 
+  function isSecure(wsComponents) {
+      return typeof wsComponents.secure === 'boolean' ? wsComponents.secure : String(wsComponents.scheme).toLowerCase() === "wss";
+  }
+  //RFC 6455
+  var handler$2 = {
+      scheme: "ws",
+      domainHost: true,
+      parse: function parse(components, options) {
+          var wsComponents = components;
+          //indicate if the secure flag is set
+          wsComponents.secure = isSecure(wsComponents);
+          //construct resouce name
+          wsComponents.resourceName = (wsComponents.path || '/') + (wsComponents.query ? '?' + wsComponents.query : '');
+          wsComponents.path = undefined;
+          wsComponents.query = undefined;
+          return wsComponents;
+      },
+      serialize: function serialize(wsComponents, options) {
+          //normalize the default port
+          if (wsComponents.port === (isSecure(wsComponents) ? 443 : 80) || wsComponents.port === "") {
+              wsComponents.port = undefined;
+          }
+          //ensure scheme matches secure flag
+          if (typeof wsComponents.secure === 'boolean') {
+              wsComponents.scheme = wsComponents.secure ? 'wss' : 'ws';
+              wsComponents.secure = undefined;
+          }
+          //reconstruct path from resource name
+          if (wsComponents.resourceName) {
+              var _wsComponents$resourc = wsComponents.resourceName.split('?'),
+                  _wsComponents$resourc2 = slicedToArray(_wsComponents$resourc, 2),
+                  path = _wsComponents$resourc2[0],
+                  query = _wsComponents$resourc2[1];
+
+              wsComponents.path = path && path !== '/' ? path : undefined;
+              wsComponents.query = query;
+              wsComponents.resourceName = undefined;
+          }
+          //forbid fragment component
+          wsComponents.fragment = undefined;
+          return wsComponents;
+      }
+  };
+
+  var handler$3 = {
+      scheme: "wss",
+      domainHost: handler$2.domainHost,
+      parse: handler$2.parse,
+      serialize: handler$2.serialize
+  };
+
   var O = {};
   //RFC 3986
-  var UNRESERVED$$ = "[A-Za-z0-9\\-\\.\\_\\~" + ( "\\xA0-\\u200D\\u2010-\\u2029\\u202F-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF" ) + "]";
+  var UNRESERVED$$ = "[A-Za-z0-9\\-\\.\\_\\~" + ("\\xA0-\\u200D\\u2010-\\u2029\\u202F-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF" ) + "]";
   var HEXDIG$$ = "[0-9A-Fa-f]"; //case-insensitive
   var PCT_ENCODED$ = subexp(subexp("%[EFef]" + HEXDIG$$ + "%" + HEXDIG$$ + HEXDIG$$ + "%" + HEXDIG$$ + HEXDIG$$) + "|" + subexp("%[89A-Fa-f]" + HEXDIG$$ + "%" + HEXDIG$$ + HEXDIG$$) + "|" + subexp("%" + HEXDIG$$ + HEXDIG$$)); //expanded
   //RFC 5322, except these symbols as per RFC 6068: @ : / ? # [ ] & ; =
@@ -2506,7 +2558,7 @@
       var decStr = pctDecChars(str);
       return !decStr.match(UNRESERVED) ? str : decStr;
   }
-  var handler$2 = {
+  var handler$4 = {
       scheme: "mailto",
       parse: function parse$$1(components, options) {
           var mailtoComponents = components;
@@ -2594,7 +2646,7 @@
 
   var URN_PARSE = /^([^\:]+)\:(.*)/;
   //RFC 2141
-  var handler$3 = {
+  var handler$5 = {
       scheme: "urn",
       parse: function parse$$1(components, options) {
           var matches = components.path && components.path.match(URN_PARSE);
@@ -2633,7 +2685,7 @@
 
   var UUID = /^[0-9A-Fa-f]{8}(?:\-[0-9A-Fa-f]{4}){3}\-[0-9A-Fa-f]{12}$/;
   //RFC 4122
-  var handler$4 = {
+  var handler$6 = {
       scheme: "urn:uuid",
       parse: function parse(urnComponents, options) {
           var uuidComponents = urnComponents;
@@ -2657,6 +2709,8 @@
   SCHEMES[handler$2.scheme] = handler$2;
   SCHEMES[handler$3.scheme] = handler$3;
   SCHEMES[handler$4.scheme] = handler$4;
+  SCHEMES[handler$5.scheme] = handler$5;
+  SCHEMES[handler$6.scheme] = handler$6;
 
   exports.SCHEMES = SCHEMES;
   exports.pctEncChar = pctEncChar;
@@ -2976,7 +3030,7 @@
    * @param {EventTarget} eventTarget The event target of this dispatching.
    * @param {Event|{type:string}} event The original event to wrap.
    */
-  function Event(eventTarget, event) {
+  function Event$1(eventTarget, event) {
       privateData.set(this, {
           eventTarget,
           event,
@@ -3003,7 +3057,7 @@
   }
 
   // Should be enumerable, but class methods are not enumerable.
-  Event.prototype = {
+  Event$1.prototype = {
       /**
        * The type of this event.
        * @type {string}
@@ -3210,18 +3264,18 @@
   };
 
   // `constructor` is not enumerable.
-  Object.defineProperty(Event.prototype, "constructor", {
-      value: Event,
+  Object.defineProperty(Event$1.prototype, "constructor", {
+      value: Event$1,
       configurable: true,
       writable: true,
   });
 
   // Ensure `event instanceof window.Event` is `true`.
   if (typeof window !== "undefined" && typeof window.Event !== "undefined") {
-      Object.setPrototypeOf(Event.prototype, window.Event.prototype);
+      Object.setPrototypeOf(Event$1.prototype, window.Event.prototype);
 
       // Make association for wrappers.
-      wrappers.set(window.Event.prototype, Event);
+      wrappers.set(window.Event.prototype, Event$1);
   }
 
   /**
@@ -3309,7 +3363,7 @@
    */
   function getWrapper(proto) {
       if (proto == null || proto === Object.prototype) {
-          return Event
+          return Event$1
       }
 
       let wrapper = wrappers.get(proto);
@@ -4030,7 +4084,7 @@
   defineEventAttribute(Race.prototype, "entrantLoaded");
   defineEventAttribute(Race.prototype, "entrantError");
 
-  var Event$1 = /*#__PURE__*/function () {
+  var Event = /*#__PURE__*/function () {
     function Event(id, name) {
       _classCallCheck(this, Event);
 
@@ -4078,7 +4132,7 @@
         var $ = Event._injected_cheerio.load(html);
 
         this.name = $('.article--event h1').text();
-        this.races = $("table:has('.table__th--title')").first().find('.table__th--title').map(function (i, el) {
+        this.races = $("table:has(.table__th--title)").first().find('.table__th--title').map(function (i, el) {
           var raceName = _this2.cleanName($(el).text());
 
           var raceId = $(el).find('.load_race_entrants').attr('data-race-id');
@@ -4149,7 +4203,7 @@
     return Event;
   }();
 
-  exports.Event = Event$1;
+  exports.Event = Event;
   exports.Race = Race;
   exports.User = User;
 

@@ -2,13 +2,17 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var Promise$1 = _interopDefault(require('es6-promise'));
+var Promise$1 = require('es6-promise');
 var uriJs = require('uri-js');
-var serialFetch = _interopDefault(require('serial-fetch'));
-var AbortControllerImpl = _interopDefault(require('abort-controller'));
+var serialFetch = require('serial-fetch');
+var AbortControllerImpl = require('abort-controller');
 var eventTargetShim = require('event-target-shim');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var Promise__default = /*#__PURE__*/_interopDefaultLegacy(Promise$1);
+var serialFetch__default = /*#__PURE__*/_interopDefaultLegacy(serialFetch);
+var AbortControllerImpl__default = /*#__PURE__*/_interopDefaultLegacy(AbortControllerImpl);
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -69,7 +73,7 @@ function _isNativeReflectConstruct() {
   if (typeof Proxy === "function") return true;
 
   try {
-    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
     return true;
   } catch (e) {
     return false;
@@ -120,7 +124,7 @@ function _arrayWithoutHoles(arr) {
 }
 
 function _iterableToArray(iter) {
-  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
 
 function _unsupportedIterableToArray(o, minLen) {
@@ -206,7 +210,7 @@ var User = /*#__PURE__*/function () {
     key: "getPoints",
     value: function getPoints() {
       if (User._injected_person_html) {
-        return Promise$1.resolve(User._injected_person_html);
+        return Promise__default['default'].resolve(User._injected_person_html);
       } else {
         return this.fetchPoints();
       }
@@ -302,11 +306,11 @@ var User = /*#__PURE__*/function () {
       this._fakeRank = true;
 
       if (attr === 'fetch') {
-        if (typeof serialFetch === 'function') {
-          obj = serialFetch(delayFetch(obj, 4000));
+        if (typeof serialFetch__default['default'] === 'function') {
+          obj = serialFetch__default['default'](delayFetch(obj, 4000));
         } else {
           // shouldn't be necessary - issue with rollup?
-          obj = serialFetch.default(delayFetch(obj, 4000));
+          obj = serialFetch__default['default'].default(delayFetch(obj, 4000));
         }
       }
 
@@ -349,7 +353,7 @@ var Race = /*#__PURE__*/function (_EventTarget) {
     key: "getEntrants",
     value: function getEntrants(race_id) {
       if (Race._injected_entrants_html) {
-        return Promise$1.resolve(Race._injected_entrants_html);
+        return Promise__default['default'].resolve(Race._injected_entrants_html);
       } else {
         return this.fetchEntrants(race_id);
       }
@@ -400,14 +404,14 @@ var Race = /*#__PURE__*/function (_EventTarget) {
       var _this3 = this;
 
       if (this._users) {
-        return Promise$1.resolve(this._users);
+        return Promise__default['default'].resolve(this._users);
       }
 
       if (this._allPromise) {
         return this._allPromise;
       }
 
-      var abortController = new AbortControllerImpl();
+      var abortController = new AbortControllerImpl__default['default']();
 
       if (typeof AbortController !== "undefined") {
         abortController = new AbortController();
@@ -418,7 +422,7 @@ var Race = /*#__PURE__*/function (_EventTarget) {
         _this3.setupNotifications(entrants); //want point promises to settle
 
 
-        return Promise$1.all(entrants.map(function (entrant) {
+        return Promise__default['default'].all(entrants.map(function (entrant) {
           return entrant.pointsPromise;
         })).then(function () {
           return _this3._users = User.sort(_this3._users);
@@ -519,7 +523,7 @@ var Event = /*#__PURE__*/function () {
     key: "get",
     value: function get() {
       if (Event._injected_event_with_entrants_html) {
-        return Promise$1.resolve(Event._injected_event_with_entrants_html);
+        return Promise__default['default'].resolve(Event._injected_event_with_entrants_html);
       } else {
         return this.fetch();
       }
@@ -532,7 +536,7 @@ var Event = /*#__PURE__*/function () {
       var $ = Event._injected_cheerio.load(html);
 
       this.name = $('.article--event h1').text();
-      this.races = $("table:has('.table__th--title')").first().find('.table__th--title').map(function (i, el) {
+      this.races = $("table:has(.table__th--title)").first().find('.table__th--title').map(function (i, el) {
         var raceName = _this2.cleanName($(el).text());
 
         var raceId = $(el).find('.load_race_entrants').attr('data-race-id');
@@ -564,7 +568,7 @@ var Event = /*#__PURE__*/function () {
       var privateVarName = "_cache_var_".concat(fnc.name);
 
       if (this[privateVarName]) {
-        return Promise$1.resolve(this[privateVarName]);
+        return Promise__default['default'].resolve(this[privateVarName]);
       }
 
       return fnc.call(this).then(function (result) {
@@ -580,7 +584,7 @@ var Event = /*#__PURE__*/function () {
     key: "getUpcomming",
     value: function getUpcomming() {
       if (Event._injected_events_html) {
-        return Promise$1.resolve(Event._injected_events_html);
+        return Promise__default['default'].resolve(Event._injected_events_html);
       } else {
         return Event._injected_fetch('https://www.britishcycling.org.uk/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=21&resultsperpage=1000').then(function (res) {
           return res.text();

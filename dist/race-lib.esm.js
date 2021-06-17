@@ -63,7 +63,7 @@ function _isNativeReflectConstruct() {
   if (typeof Proxy === "function") return true;
 
   try {
-    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
     return true;
   } catch (e) {
     return false;
@@ -114,7 +114,7 @@ function _arrayWithoutHoles(arr) {
 }
 
 function _iterableToArray(iter) {
-  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
 
 function _unsupportedIterableToArray(o, minLen) {
@@ -526,7 +526,7 @@ var Event = /*#__PURE__*/function () {
       var $ = Event._injected_cheerio.load(html);
 
       this.name = $('.article--event h1').text();
-      this.races = $("table:has('.table__th--title')").first().find('.table__th--title').map(function (i, el) {
+      this.races = $("table:has(.table__th--title)").first().find('.table__th--title').map(function (i, el) {
         var raceName = _this2.cleanName($(el).text());
 
         var raceId = $(el).find('.load_race_entrants').attr('data-race-id');
