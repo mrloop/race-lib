@@ -28,10 +28,10 @@
   },
   "devDependencies": {
     "@ava/babel": "1.0",
-    "@babel/core": "^7.6",
+    "@babel/core": "7.15.8",
     "@babel/plugin-external-helpers": "^7.2",
-    "@babel/preset-env": "^7.6",
-    "@babel/register": "^7.10",
+    "@babel/preset-env": "7.15.8",
+    "@babel/register": "7.15.3",
     "@rollup/plugin-babel": "^5.1",
     "@rollup/plugin-commonjs": "^14.0",
     "@rollup/plugin-node-resolve": "^8.4",
