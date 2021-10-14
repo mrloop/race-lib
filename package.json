@@ -40,7 +40,7 @@
     "node-fetch": "2.6.5",
     "qunit": "^2.9",
     "race-fix": "^0.0.2",
-    "regenerator-runtime": "^0.13.3",
+    "regenerator-runtime": "0.13.9",
     "rollup": "^2.21"
   },
   "ava": {
