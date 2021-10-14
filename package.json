@@ -37,7 +37,7 @@
     "@rollup/plugin-node-resolve": "^8.4",
     "ava": "^3.10",
     "cheerio": "^1.0.0-rc.3",
-    "node-fetch": "^2.6",
+    "node-fetch": "2.6.5",
     "qunit": "^2.9",
     "race-fix": "^0.0.2",
     "regenerator-runtime": "^0.13.3",
