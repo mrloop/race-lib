@@ -41,7 +41,7 @@
     "qunit": "2.17.2",
     "race-fix": "^0.0.2",
     "regenerator-runtime": "0.13.9",
-    "rollup": "^2.21"
+    "rollup": "2.58.0"
   },
   "ava": {
     "babel": true,
