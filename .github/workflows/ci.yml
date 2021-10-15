@@ -5,6 +5,7 @@ on:
   push:
     branches: ['master']
 
+
   # early issue detection: run CI weekly on Sundays
   schedule:
     - cron: "0 6 * * 0"
@@ -27,5 +28,7 @@ jobs:
           node-version: 12
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
+      - name: Lint
+        run: yarn lint
       - name: Browser Tests
         run: yarn test

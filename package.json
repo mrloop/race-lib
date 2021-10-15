@@ -17,6 +17,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "test": "ava",
+    "lint": "yarn eslint .",
     "pretest": "yarn run build"
   },
   "dependencies": {
@@ -37,6 +38,11 @@
     "@rollup/plugin-node-resolve": "^8.4",
     "ava": "^3.10",
     "cheerio": "^1.0.0-rc.3",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
     "node-fetch": "2.6.5",
     "qunit": "2.17.2",
     "race-fix": "^0.0.2",
