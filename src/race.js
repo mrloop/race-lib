@@ -1,4 +1,4 @@
-import User from './user'
+import User from './user.js'
 
 import Promise from 'es6-promise'
 import AbortControllerImpl from 'abort-controller'

@@ -1,7 +1,7 @@
-import test from 'ava'
-import { Event, User } from '../dist/race-lib.cjs'
+import { Event, User } from '../src/main.js'
 import cheerio from 'cheerio'
 import fetch from 'node-fetch'
+import QUnit from 'qunit'
 
 import { injectFixtures } from 'race-fix'
 
@@ -12,16 +12,14 @@ User.inject('cheerio', cheerio)
 
 injectFixtures(Event)
 
-test('event', async t => {
+QUnit.test('event', async assert => {
   const myEvent = new Event('nonsense_id')
-  await myEvent.init().then((evt) => {
-    t.is(evt.races.length, 1)
-  })
+  const { races } = await myEvent.init()
+  assert.equal(races.length, 1)
 })
 
-test('user', async t => {
+QUnit.test('user', async assert => {
   const user = new User('https://batman.org/?goats_cheese=false&person_id=1234')
-  await user.initPoints().then((user) => {
-    t.is(user.current_club, 'Leslie Bike Shop/Bikers Boutique')
-  })
+  const { current_club: currentClub } = await user.initPoints()
+  assert.equal(currentClub, 'Leslie Bike Shop/Bikers Boutique')
 })
