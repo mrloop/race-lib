@@ -1,7 +1,7 @@
 import Promise from 'es6-promise'
 import { parse } from 'uri-js'
 import serialFetch from 'serial-fetch'
-import delayFetch from './delay-fetch'
+import delayFetch from './delay-fetch.js'
 
 const DEFAULT_NUM = 999
 

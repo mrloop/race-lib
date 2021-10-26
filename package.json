@@ -2,23 +2,17 @@
   "name": "race-lib",
   "version": "1.2.0",
   "description": "retrieve event data from britishcycling.org",
-  "main": "dist/race-lib.cjs.js",
-  "module": "dist/race-lib.esm.js",
-  "browser": "dist/race-lib.umd.js",
+  "main": "src/main.js",
+  "type": "module",
   "repository": "https://github.com/mrloop/race-lib",
   "author": "mrloop <ewan@mrloop.com>",
   "license": "MIT",
   "keywords": [
-    "isomorphic",
-    "rollup",
     "britishcycling"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "test": "ava",
-    "lint": "yarn eslint .",
-    "pretest": "yarn run build"
+    "test": "yarn qunit tests/test.js",
+    "lint": "yarn eslint ."
   },
   "dependencies": {
     "abort-controller": "^3.0.0",
@@ -28,15 +22,6 @@
     "uri-js": "^4.2"
   },
   "devDependencies": {
-    "@ava/babel": "2.0.0",
-    "@babel/core": "7.15.8",
-    "@babel/plugin-external-helpers": "7.14.5",
-    "@babel/preset-env": "7.15.8",
-    "@babel/register": "7.15.3",
-    "@rollup/plugin-babel": "5.3.0",
-    "@rollup/plugin-commonjs": "14.0.0",
-    "@rollup/plugin-node-resolve": "8.4.0",
-    "ava": "3.15.0",
     "cheerio": "1.0.0-rc.10",
     "eslint": "8.1.0",
     "eslint-config-standard": "16.0.3",
@@ -45,23 +30,8 @@
     "eslint-plugin-promise": "5.1.1",
     "node-fetch": "2.6.5",
     "qunit": "2.17.2",
-    "race-fix": "0.0.2",
-    "regenerator-runtime": "0.13.9",
-    "rollup": "2.58.0"
+    "race-fix": "0.0.2"
   },
-  "ava": {
-    "babel": true,
-    "files": [
-      "tests/*.js"
-    ],
-    "require": [
-      "@babel/register",
-      "regenerator-runtime"
-    ]
-  },
-  "files": [
-    "dist"
-  ],
   "volta": {
     "node": "16.13.0",
     "yarn": "1.22.17"

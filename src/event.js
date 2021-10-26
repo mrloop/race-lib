@@ -1,4 +1,4 @@
-import Race from './race'
+import Race from './race.js'
 
 import Promise from 'es6-promise'
 
