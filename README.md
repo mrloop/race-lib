@@ -1,4 +1,8 @@
 [![CI](https://github.com/mrloop/race-lib/actions/workflows/ci.yml/badge.svg)](https://github.com/mrloop/race-lib/actions/workflows/ci.yml)
+[![Latest NPM release][npm-badge]][npm-badge-url]
+
+[npm-badge]: https://img.shields.io/npm/v/race-lib.svg
+[npm-badge-url]: https://www.npmjs.com/package/race-lib
 
 # ⚙ race-lib
 
@@ -12,7 +16,7 @@ import fetch from 'node-fetch';
 Event.inject('fetch', fetch);
 Event.inject('cheerio', cheerio);
 
-Event.upcomming().then((events) => {
+let events = await Event.upcomming().then((events) => {
   events.forEach( evt => console.log(evt.name));
 });
 ```
