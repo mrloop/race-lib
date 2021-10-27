@@ -2,17 +2,18 @@
   "name": "race-lib",
   "version": "1.2.0",
   "description": "retrieve event data from britishcycling.org",
-  "main": "src/main.js",
-  "type": "module",
-  "repository": "https://github.com/mrloop/race-lib",
-  "author": "mrloop <ewan@mrloop.com>",
-  "license": "MIT",
   "keywords": [
     "britishcycling"
   ],
+  "repository": "https://github.com/mrloop/race-lib",
+  "license": "MIT",
+  "author": "mrloop <ewan@mrloop.com>",
+  "type": "module",
+  "main": "src/main.js",
   "scripts": {
-    "test": "yarn qunit tests/test.js",
-    "lint": "yarn eslint ."
+    "lint": "yarn eslint .",
+    "release": "yarn release-it",
+    "test": "yarn qunit tests/test.js"
   },
   "dependencies": {
     "abort-controller": "^3.0.0",
@@ -30,7 +31,27 @@
     "eslint-plugin-promise": "5.1.1",
     "node-fetch": "2.6.5",
     "qunit": "2.17.2",
-    "race-fix": "0.0.2"
+    "race-fix": "0.0.2",
+    "release-it": "14.11.6",
+    "release-it-lerna-changelog": "^3.1.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "release-it": {
+    "plugins": {
+      "release-it-lerna-changelog": {
+        "infile": "CHANGELOG.md",
+        "launchEditor": true
+      }
+    },
+    "git": {
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true,
+      "tokenRef": "GITHUB_AUTH"
+    }
   },
   "volta": {
     "node": "16.13.0",
