@@ -1,4 +1,4 @@
-import Promise from 'es6-promise'
+import { cheerio, fakeRank, loadFixture, useFixtures } from './config.js'
 import { parse } from 'uri-js'
 import fetch from './fetch.js'
 
@@ -33,9 +33,9 @@ export default class User {
       })
   }
 
-  getPoints () {
-    if (User._injected_person_html) {
-      return Promise.resolve(User._injected_person_html)
+  async getPoints () {
+    if (useFixtures) {
+      return loadFixture('person_html')
     } else {
       return this.fetchPoints()
     }
@@ -44,7 +44,7 @@ export default class User {
   initPoints () {
     return this.getPoints().then(body => {
       this.points_loaded = true
-      const $ = User._injected_cheerio.load(body)
+      const $ = cheerio.load(body)
       $('dd').each((i, el) => {
         this.parseDd($(el).text())
       })
@@ -75,7 +75,7 @@ export default class User {
         this.national_rank = Number(arr[1]) || DEFAULT_NUM
         break
       case 'Regional Rank':
-        if (User._fakeRank) {
+        if (fakeRank) {
           this.regional_rank = [...this.name].reduce((a, c) => a + c.charCodeAt(), 0)
         } else {
           this.regional_rank = Number(arr[1]) || DEFAULT_NUM
@@ -102,11 +102,5 @@ export default class User {
 
   static sort (users) {
     return users.sort(this.compareFnc)
-  }
-
-  static inject (attr, obj) {
-    const privateVarName = `_injected_${attr}`
-    this._fakeRank = true
-    this[privateVarName] = obj
   }
 }

@@ -1,3 +1,4 @@
+import { cheerio, loadFixture, useFixtures } from './config.js'
 import User from './user.js'
 
 import Promise from 'es6-promise'
@@ -22,15 +23,15 @@ export default class Race extends EventTarget {
   }
 
   getEntrants (raceId) {
-    if (Race._injected_entrants_html) {
-      return Promise.resolve(Race._injected_entrants_html)
+    if (useFixtures) {
+      return loadFixture('entrants_html')
     } else {
       return this.fetchEntrants(raceId)
     }
   }
 
   processEntrants (html, signal) {
-    const $ = Race._injected_cheerio.load(html)
+    const $ = cheerio.load(html)
     return $("table[summary='List of entrants in this race'] tbody tr").map((_, el) => {
       const link = $(el).find('a').first()
       return { href: link.attr('href'), name: link.text().trim() }
@@ -103,12 +104,6 @@ export default class Race extends EventTarget {
         this.dispatchEvent({ type: 'entrantError', detail: { user: entrant, error: err } })
       })
     })
-  }
-
-  static inject (attr, obj) {
-    const privateVarName = `_injected_${attr}`
-    this[privateVarName] = obj
-    User.inject(attr, obj)
   }
 }
 

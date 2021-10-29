@@ -1,3 +1,4 @@
+import { cheerio, loadFixture, useFixtures } from './config.js'
 import Race from './race.js'
 
 import Promise from 'es6-promise'
@@ -26,15 +27,15 @@ export default class Event {
   }
 
   get () {
-    if (Event._injected_event_with_entrants_html) {
-      return Promise.resolve(Event._injected_event_with_entrants_html)
+    if (useFixtures) {
+      return loadFixture('event_with_entrants_html')
     } else {
       return this.fetch()
     }
   }
 
   process (html) {
-    const $ = Event._injected_cheerio.load(html)
+    const $ = cheerio.load(html)
     this.name = $('.article--event h1').text()
     this.races = $('table:has(.table__th--title)').first().find('.table__th--title').map((_, el) => {
       const raceName = this.cleanName($(el).text())
@@ -49,12 +50,6 @@ export default class Event {
 
   cleanStr (str) {
     return str.replace(/\s+/g, ' ').trim()
-  }
-
-  static inject (attr, obj) {
-    const privateVarName = `_injected_${attr}`
-    this[privateVarName] = obj
-    Race.inject(attr, obj)
   }
 
   static cachePromise (fnc) {
@@ -73,8 +68,8 @@ export default class Event {
   }
 
   static getUpcomming () {
-    if (Event._injected_events_html) {
-      return Promise.resolve(Event._injected_events_html)
+    if (useFixtures) {
+      return loadFixture('events_html')
     } else {
       return myFetch('https://www.britishcycling.org.uk/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=21&resultsperpage=1000').then(res => res.text())
     }
@@ -82,7 +77,8 @@ export default class Event {
 
   static _upcomming () {
     return this.getUpcomming(true).then((html) => {
-      const $ = Event._injected_cheerio.load(html)
+      const $ = cheerio.load(html)
+
       return $('.article--events__table .events--desktop__row .table__more-label a').map(function (_, node) {
         return new Event($(node).attr('data-event-id'), $(node).text())
       }).toArray()
