@@ -1,9 +1,11 @@
-function delayFetch (originalFetch, delay) {
+import Promise from 'es6-promise'
+
+export default function delayFetch (originalFetch, delay) {
   return function fetch (input, init) {
     return new Promise((resolve, reject) => {
       // bit of work around for delayed serialized requests and abort.
       // manually check in signal.abort has been called as fetch wouldn't have existed when first called
-      if (init.signal && init.signal.aborted) {
+      if (init && init.signal && init.signal.aborted) {
         /* eslint-disable-next-line prefer-promise-reject-errors */
         reject({ name: 'AbortError' })
       } else {
@@ -14,5 +16,3 @@ function delayFetch (originalFetch, delay) {
     })
   }
 };
-
-export default delayFetch

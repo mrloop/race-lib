@@ -1,6 +1,7 @@
 import Race from './race.js'
 
 import Promise from 'es6-promise'
+import myFetch from './fetch.js'
 
 export default class Event {
   constructor (id, name) {
@@ -20,7 +21,7 @@ export default class Event {
   }
 
   fetch () {
-    return Event._injected_fetch(`https://www.britishcycling.org.uk/events/details/${this.id}`)
+    return myFetch(`https://www.britishcycling.org.uk/events/details/${this.id}`)
       .then(res => res.text())
   }
 
@@ -75,7 +76,7 @@ export default class Event {
     if (Event._injected_events_html) {
       return Promise.resolve(Event._injected_events_html)
     } else {
-      return Event._injected_fetch('https://www.britishcycling.org.uk/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=21&resultsperpage=1000').then(res => res.text())
+      return myFetch('https://www.britishcycling.org.uk/events?search_type=upcomingevents&zuv_bc_event_filter_id[]=21&resultsperpage=1000').then(res => res.text())
     }
   }
 

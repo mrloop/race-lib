@@ -1,13 +1,10 @@
 import { Event, User } from '../src/main.js'
 import cheerio from 'cheerio'
-import fetch from 'node-fetch'
 import QUnit from 'qunit'
 
 import { injectFixtures } from 'race-fix'
 
-Event.inject('fetch', fetch)
 Event.inject('cheerio', cheerio)
-User.inject('fetch', fetch)
 User.inject('cheerio', cheerio)
 
 injectFixtures(Event)
