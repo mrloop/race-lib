@@ -3,6 +3,7 @@ import User from './user.js'
 import Promise from 'es6-promise'
 import AbortControllerImpl from 'abort-controller'
 import { EventTarget, defineEventAttribute } from 'event-target-shim'
+import fetch from './fetch.js'
 
 export default class Race extends EventTarget {
   constructor (id, name) {
@@ -16,7 +17,7 @@ export default class Race extends EventTarget {
   }
 
   fetchEntrants () {
-    return Race._injected_fetch(`https://www.britishcycling.org.uk/events_version_2/ajax_race_entrants_dialog?race_id=${this.id}`)
+    return fetch(`https://www.britishcycling.org.uk/events_version_2/ajax_race_entrants_dialog?race_id=${this.id}`)
       .then(res => res.text())
   }
 

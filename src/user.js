@@ -1,7 +1,6 @@
 import Promise from 'es6-promise'
 import { parse } from 'uri-js'
-import serialFetch from 'serial-fetch'
-import delayFetch from './delay-fetch.js'
+import fetch from './fetch.js'
 
 const DEFAULT_NUM = 999
 
@@ -24,7 +23,7 @@ export default class User {
   }
 
   fetchPoints () {
-    return User._injected_fetch(`https://www.britishcycling.org.uk/${this.points_href}`, { signal: this.signal })
+    return fetch(`https://www.britishcycling.org.uk/${this.points_href}`, { signal: this.signal })
       .then(res => {
         if (res.status >= 400) {
           this.error = res.statusText
@@ -108,13 +107,6 @@ export default class User {
   static inject (attr, obj) {
     const privateVarName = `_injected_${attr}`
     this._fakeRank = true
-    if (attr === 'fetch') {
-      if (typeof serialFetch === 'function') {
-        obj = serialFetch(delayFetch(obj, 4000))
-      } else { // shouldn't be necessary - issue with rollup?
-        obj = serialFetch.default(delayFetch(obj, 4000))
-      }
-    }
     this[privateVarName] = obj
   }
 }
