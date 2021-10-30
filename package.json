@@ -1,6 +1,6 @@
 {
   "name": "race-lib",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "retrieve event data from britishcycling.org",
   "keywords": [
     "britishcycling"
