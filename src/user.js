@@ -1,4 +1,4 @@
-import { cheerio, fakeRank, loadFixture, useFixtures } from './config.js'
+import { cheerio, loadFixture, useFixtures } from './config.js'
 import { parse } from 'uri-js'
 import fetch from './fetch.js'
 
@@ -75,11 +75,7 @@ export default class User {
         this.national_rank = Number(arr[1]) || DEFAULT_NUM
         break
       case 'Regional Rank':
-        if (fakeRank) {
-          this.regional_rank = [...this.name].reduce((a, c) => a + c.charCodeAt(), 0)
-        } else {
-          this.regional_rank = Number(arr[1]) || DEFAULT_NUM
-        }
+        this.regional_rank = Number(arr[1]) || DEFAULT_NUM
         break
       case 'Regional Points':
         this.regional_points = Number(arr[1]) || DEFAULT_NUM
