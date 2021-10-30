@@ -1,7 +1,6 @@
 import { cheerio, loadFixture, useFixtures } from './config.js'
 import Race from './race.js'
 
-import Promise from 'es6-promise'
 import myFetch from './fetch.js'
 
 export default class Event {

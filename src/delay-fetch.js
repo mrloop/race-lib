@@ -1,5 +1,3 @@
-import Promise from 'es6-promise'
-
 export default function delayFetch (originalFetch, delay) {
   return function fetch (input, init) {
     return new Promise((resolve, reject) => {

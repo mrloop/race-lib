@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "abort-controller": "^3.0.0",
-    "es6-promise": "^4.2",
     "event-target-shim": "^5.0",
     "serial-fetch": "1.0.0",
     "uri-js": "^4.2"
