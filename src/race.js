@@ -1,7 +1,6 @@
 import { cheerio, loadFixture, useFixtures } from './config.js'
 import User from './user.js'
 
-import Promise from 'es6-promise'
 import AbortControllerImpl from 'abort-controller'
 import { EventTarget, defineEventAttribute } from 'event-target-shim'
 import fetch from './fetch.js'
