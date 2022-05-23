@@ -23,7 +23,7 @@
     "uri-js": "^4.2"
   },
   "devDependencies": {
-    "cheerio": "1.0.0-rc.10",
+    "cheerio": "1.0.0-rc.11",
     "eslint": "8.15.0",
     "eslint-config-standard": "16.0.3",
     "eslint-plugin-import": "2.26.0",
