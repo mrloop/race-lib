@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "cheerio": "1.0.0-rc.11",
-    "eslint": "8.16.0",
+    "eslint": "8.17.0",
     "eslint-config-standard": "16.0.3",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-node": "11.1.0",
