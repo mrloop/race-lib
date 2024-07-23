@@ -28,7 +28,7 @@
     "eslint-config-standard": "17.1.0",
     "eslint-plugin-import": "2.29.1",
     "eslint-plugin-n": "15.7.0",
-    "eslint-plugin-promise": "6.4.0",
+    "eslint-plugin-promise": "6.5.0",
     "qunit": "2.21.1",
     "race-fix": "0.0.2",
     "release-it": "15.11.0",
