@@ -29,7 +29,7 @@
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-n": "15.7.0",
     "eslint-plugin-promise": "6.6.0",
-    "qunit": "2.23.1",
+    "qunit": "2.24.0",
     "race-fix": "0.0.2",
     "release-it": "15.11.0",
     "release-it-lerna-changelog": "5.0.0"
