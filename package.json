@@ -31,7 +31,7 @@
     "eslint-plugin-promise": "6.6.0",
     "qunit": "2.25.0",
     "race-fix": "0.0.2",
-    "release-it": "15.11.0",
+    "release-it": "19.2.4",
     "release-it-lerna-changelog": "5.0.0"
   },
   "publishConfig": {
